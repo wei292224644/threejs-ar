@@ -65,7 +65,8 @@ export class WechatPlatform extends Platform {
       innerHeight: systemInfo.windowHeight,
       devicePixelRatio: systemInfo.pixelRatio,
 
-      AudioContext: function () {},
+      //@ts-ignore
+      AudioContext: () => { return wx.createWebAudioContext() },
       requestAnimationFrame: this.canvas.requestAnimationFrame,
       cancelAnimationFrame: this.canvas.cancelAnimationFrame,
       DeviceOrientationEvent: {

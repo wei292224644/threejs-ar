@@ -3,7 +3,7 @@ import firelog from './firelog.json';
 
 export default mergeRollupOptions(
   {
-    input: ['./miniprogram/pages/index/index.ts'],
+    input: ['./miniprogram/viewer/viewer.ts'],
     output: {
       format: 'cjs',
       dir: 'miniprogram/',
