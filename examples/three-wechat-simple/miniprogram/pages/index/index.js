@@ -66,7 +66,6 @@ Component({
                 this.viewer.camera.projectionMatrix.fromArray(projectionMatrix);
                 this.viewer.camera.projectionMatrixInverse.copy(this.viewer.camera.projectionMatrix).invert();
             }
-            this.viewer.renderer.render(this.viewer.scene, this.viewer.camera);
         },
     },
 })

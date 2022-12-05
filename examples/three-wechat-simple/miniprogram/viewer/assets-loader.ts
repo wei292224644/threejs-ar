@@ -1,6 +1,7 @@
 import { AudioLoader } from "three";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
+
+import { GLTFLoader } from "./GLTFLoader";
+import { RGBELoader } from "./RGBELoader";
 
 type AssetType = "hdr" | "gltf" | "audio";
 
@@ -65,10 +66,10 @@ export class AssetsLoaderList {
                         // this._audio.load(data.url, (buffer) => { res[key] = buffer; onLoad() })
                         break;
                     case "gltf":
-                        this._gltf.load(data.url, (gltf) => { res[key] = gltf; onLoad() });
+                        this._gltf.load(data.url, (gltf:any) => { res[key] = gltf; onLoad() });
                         break;
                     case "hdr":
-                        this._hdr.load(data.url, (texture) => { res[key] = texture; onLoad() });
+                        this._hdr.load(data.url, (texture:any) => { res[key] = texture; onLoad() });
                         break;
                     default:
                         break;

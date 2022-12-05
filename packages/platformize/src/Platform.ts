@@ -10,7 +10,6 @@ export interface Polyfill {
   HTMLCanvasElement: HTMLCanvasElement;
   HTMLImageElement: HTMLImageElement;
   Image: HTMLImageElement,
-
   global: Window;
   atob: Window['atob'];
   navigator: Window['navigator'],

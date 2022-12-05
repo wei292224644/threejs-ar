@@ -8,6 +8,7 @@ import {
 import type { Plugin } from 'rollup';
 import * as path from 'path';
 
+
 type platformizeOptions = Parameters<typeof platformize>['0'];
 
 export const DEFAULT_API_LIST = [...DEFAULT_API_LIST_BAE, '$defaultWebGLExtensions'];

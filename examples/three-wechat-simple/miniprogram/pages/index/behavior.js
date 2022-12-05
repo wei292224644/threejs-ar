@@ -12,6 +12,12 @@ export default function getBehavior() {
         methods: {
             onReady() {
                 wx.createSelectorQuery()
+                    .select('#cameraTexture')
+                    .node()
+                    .exec(textureRes => {
+                        this.textureCanvasGL = textureRes[0].node.getContext('webgl');
+                    })
+                wx.createSelectorQuery()
                     .select('#webgl')
                     .node()
                     .exec(res => {
@@ -46,10 +52,13 @@ export default function getBehavior() {
 
                 this.viewer = new Viewer(canvas, this.innerAudioContext);
                 this.viewer.init({
-                    id: "w4brnnfq_gwl"
+                    id: "w4brnnfq_gwl",
+                    version: 10,
+                    //  id: "zmcugkwi_13o"
+                    // id: "0vqtpuwo_fkt"
                 }, () => {
                     console.log("started")
-                    this.viewer.animation.play("Take 001");
+                    this.viewer.animation.play("SceneRootProxy|Take 001_SceneRootProxy");
                 });
 
                 // 自定义初始化
@@ -64,7 +73,7 @@ export default function getBehavior() {
                         },
                     },
                     version: 'v1',
-                    gl: this.gl
+                    gl: this.textureCanvasGL
                 })
 
 
@@ -104,14 +113,13 @@ export default function getBehavior() {
                         // debugger
                         const frame = session.getVKFrame(canvas.width, canvas.height)
                         if (frame) {
-                            this.viewer.renderer.clear();
                             this.render(frame)
-                            this.viewer.render();
                         }
-
+                        
                         session.requestAnimationFrame(onFrame)
                     }
                     onFrame();
+                    this.viewer.render();
                 })
             },
             onTouchEnd(evt) {

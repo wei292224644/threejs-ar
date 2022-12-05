@@ -2,26 +2,19 @@ import { AnimationController } from "./animation";
 import { WechatPlatform, PlatformManager } from 'platformize-three';
 import {
     ACESFilmicToneMapping,
-    AnimationMixer,
     Clock,
     DataTexture,
     EquirectangularReflectionMapping,
     FileLoader,
     Group,
     LinearToneMapping,
-    ObjectLoader,
     PerspectiveCamera,
     ReinhardToneMapping,
     Scene,
     sRGBEncoding,
     WebGL1Renderer,
-    CullFaceNone,
-    AudioLoader,
-    Audio,
-    AudioListener
+    CullFaceNone
 } from "three";
-import { GLTF, GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 import { AssetsLoaderList } from "./assets-loader";
 
 
@@ -53,8 +46,9 @@ export class Viewer {
 
 
         this.renderer = new WebGL1Renderer({ canvas, antialias: true, alpha: true });
-        this.renderer.autoClearColor = false;
-        this.renderer.state.setCullFace(CullFaceNone);
+        // this.renderer.autoClearColor = false;
+        // this.renderer.state.setCullFace(CullFaceNone);
+        
 
         this.scene = new Scene();
         this.animation = new AnimationController(this);
@@ -123,8 +117,8 @@ export class Viewer {
 
             assets.load().then((res: any) => {
 
-                const gltf = res.gltf as GLTF;
-                const reticle = res.reticle as GLTF;
+                const gltf = res.gltf;
+                const reticle = res.reticle;
                 const hdr = res.hdr as DataTexture;
 
                 this.scene.add(gltf.scene)
@@ -194,6 +188,8 @@ export class Viewer {
 
 
     render() {
+        requestAnimationFrame(this.renderHandler);
+        this.renderer.render(this.scene,this.camera);
         const dt = this.clock.getDelta();
         this.animation.update(dt);
     }

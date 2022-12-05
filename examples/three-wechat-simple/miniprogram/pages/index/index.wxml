@@ -1,5 +1,4 @@
-<view class="container page" data-weui-theme="{{theme}}">
-<view><canvas type="webgl" id="webgl" style="width: {{width}}px; height: {{height}}px" bindtouchend="onTouchEnd">
-    </canvas></view>
-<view class="page-body-text tc" style="height:20%">提示：触碰屏幕任意点, 可在对应位置生成示例的机器小人, 其中光标标记指示的是水平面</view>
+<view >
+    <canvas type="webgl" id="cameraTexture" style="width: 100vw; height: 100vh; background: black;"></canvas>
+    <canvas type="webgl" id="webgl" style="width: {{width}}px; height: {{height}}px; z-index: 99; position: absolute;top:0;left:0;" bindtouchend="onTouchEnd"></canvas>
 </view>

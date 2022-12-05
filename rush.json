@@ -449,6 +449,12 @@
     //   "reviewCategory": "tools"
     // }
     {
+      "packageName": "three",
+      "projectFolder": "packages/three.js",
+      "shouldPublish": true
+    },
+
+    {
       "packageName": "platformize",
       "projectFolder": "packages/platformize",
       "shouldPublish": true

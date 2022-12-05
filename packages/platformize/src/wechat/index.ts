@@ -111,6 +111,8 @@ export class WechatPlatform extends Platform {
       URL,
       Image,
       HTMLImageElement: img.constructor,
+      // @ts-expect-error
+      navigator: { userAgent: "" },
 
       atob: $atob,
       global: window,

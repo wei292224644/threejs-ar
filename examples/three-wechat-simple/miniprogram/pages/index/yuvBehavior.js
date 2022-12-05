@@ -1,7 +1,7 @@
 const yuvBehavior = Behavior({
     methods: {
         initShader() {
-            const gl = this.gl = this.viewer.renderer.getContext()
+            const gl = this.textureCanvasGL;
             const currentProgram = gl.getParameter(gl.CURRENT_PROGRAM)
             const vs = `
         attribute vec2 a_position;
@@ -61,7 +61,7 @@ const yuvBehavior = Behavior({
             gl.useProgram(currentProgram)
         },
         initVAO() {
-            const gl = this.viewer.renderer.getContext()
+            const gl = this.textureCanvasGL;
             const ext = gl.getExtension('OES_vertex_array_object')
             this.ext = ext
 
@@ -94,8 +94,8 @@ const yuvBehavior = Behavior({
             this.initVAO()
         },
         renderGL(frame) {
-            const gl = this.viewer.renderer.getContext()
-            // gl.disable(gl.DEPTH_TEST)
+            const gl = this.textureCanvasGL;
+            gl.disable(gl.DEPTH_TEST)
             const {
                 yTexture,
                 uvTexture
