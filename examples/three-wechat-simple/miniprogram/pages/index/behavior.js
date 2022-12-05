@@ -27,14 +27,14 @@ export default function getBehavior() {
                         const pixelRatio = info.pixelRatio
                         const calcSize = (width, height) => {
                             console.log(`canvas size: width = ${width} , height = ${height}`)
-                            this.canvas.width = width * pixelRatio / 2
-                            this.canvas.height = height * pixelRatio / 2
+                            this.canvas.width = width * pixelRatio
+                            this.canvas.height = height * pixelRatio
                             this.setData({
                                 width,
                                 height,
                             })
                         }
-                        calcSize(info.windowWidth, info.windowHeight * 0.8)
+                        calcSize(info.windowWidth, info.windowHeight)
 
                         this.initVK()
                     })
@@ -52,19 +52,49 @@ export default function getBehavior() {
 
                 this.viewer = new Viewer(canvas, this.innerAudioContext);
                 this.viewer.init({
-                    id: "w4brnnfq_gwl",
-                    version: 10,
+                    // id: "w4brnnfq_gwl",
+                    // version: 10,
                     //  id: "zmcugkwi_13o"
-                    // id: "0vqtpuwo_fkt"
+                    // id: "glehb55g_a2u",
+                    // version:2,
+                    id: "450yztqd_mh5"
                 }, () => {
-                    console.log("started")
-                    this.viewer.animation.play("SceneRootProxy|Take 001_SceneRootProxy");
+                    console.log("started");
+                    for (const [key, clip] of this.viewer.animation.clips) {
+                        this.viewer.animation.play(key);
+                        break;
+                    }
+
+
+                    const info = wx.getSystemInfoSync()
+                    calcSize(info.windowWidth, info.windowHeight, info.pixelRatio);
                 });
+                this.viewer.render();
 
                 // 自定义初始化
                 if (this.init) this.init()
 
-                console.log('this.gl', this.gl);
+
+                const calcSize = (width, height, pixelRatio) => {
+                    console.log(`canvas size: width = ${width} , height = ${height}`)
+                    this.canvas.width = width * pixelRatio
+                    this.canvas.height = height * pixelRatio
+
+                    this.viewer.camera.aspect = this.canvas.width / this.canvas.height;
+                    this.viewer.camera.updateProjectionMatrix();
+
+                    this.viewer.renderer.setSize(this.canvas.width, this.canvas.height);
+
+                    console.log(width, height);
+                    this.setData({
+                        width,
+                        height,
+                    })
+                }
+
+
+                const info = wx.getSystemInfoSync()
+                calcSize(info.windowWidth, info.windowHeight, info.pixelRatio);
 
                 const session = this.session = wx.createVKSession({
                     track: {
@@ -76,36 +106,14 @@ export default function getBehavior() {
                     gl: this.textureCanvasGL
                 })
 
-
+                session.on('resize', () => {
+                    const info = wx.getSystemInfoSync()
+                    calcSize(info.windowWidth, info.windowHeight, info.pixelRatio)
+                })
                 session.start(err => {
                     if (err) return console.error('VK error: ', err)
 
                     console.log('@@@@@@@@ VKSession.version', session.version)
-
-                    const canvas = this.canvas
-
-                    const calcSize = (width, height, pixelRatio) => {
-                        console.log(`canvas size: width = ${width} , height = ${height}`)
-                        this.canvas.width = width * pixelRatio / 2
-                        this.canvas.height = height * pixelRatio / 2
-
-                        this.viewer.camera.aspect = this.canvas.width / this.canvas.height;
-                        this.viewer.camera.updateProjectionMatrix();
-
-                        this.viewer.renderer.setSize(this.canvas.width, this.canvas.height);
-
-                        this.setData({
-                            width,
-                            height,
-                        })
-                    }
-
-                    session.on('resize', () => {
-                        const info = wx.getSystemInfoSync()
-                        calcSize(info.windowWidth, info.windowHeight * 0.8, info.pixelRatio)
-                    })
-                    const info = wx.getSystemInfoSync()
-                    calcSize(info.windowWidth, info.windowHeight * 0.8, info.pixelRatio);
 
                     // 逐帧渲染
                     const onFrame = timestamp => {
@@ -115,11 +123,10 @@ export default function getBehavior() {
                         if (frame) {
                             this.render(frame)
                         }
-                        
+
                         session.requestAnimationFrame(onFrame)
                     }
                     onFrame();
-                    this.viewer.render();
                 })
             },
             onTouchEnd(evt) {

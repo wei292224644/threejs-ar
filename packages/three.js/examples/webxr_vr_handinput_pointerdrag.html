@@ -151,7 +151,7 @@
 					this.queries.intersectable.results.forEach( entity => {
 
 						const object = entity.getComponent( Object3D ).object;
-						const intersections = hp.intersectObject( object, false );
+						const intersections = hp.intersectObject( object );
 						if ( intersections && intersections.length > 0 ) {
 
 							if ( distance == null || intersections[ 0 ].distance < distance ) {

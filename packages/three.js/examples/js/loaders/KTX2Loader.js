@@ -17,8 +17,6 @@
 
 	const _taskCache = new WeakMap();
 
-	let _activeLoaders = 0;
-
 	class KTX2Loader extends THREE.Loader {
 
 		constructor( manager ) {
@@ -110,15 +108,6 @@
 					} );
 
 				} );
-
-				if ( _activeLoaders > 0 ) {
-
-					// Each instance loads a transcoder and allocates workers, increasing network and memory cost.
-					console.warn( 'THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues.' + ' Use a single KTX2Loader instance, or call .dispose() on old instances.' );
-
-				}
-
-				_activeLoaders ++;
 
 			}
 
@@ -218,7 +207,6 @@
 
 			URL.revokeObjectURL( this.workerSourceURL );
 			this.workerPool.dispose();
-			_activeLoaders --;
 			return this;
 
 		}

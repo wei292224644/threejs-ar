@@ -36,6 +36,7 @@ export class Viewer {
     clock: Clock;
 
     audioContext: any;
+    private started = false;
 
     constructor(canvas: any, audioContext: any) {
 
@@ -48,7 +49,7 @@ export class Viewer {
         this.renderer = new WebGL1Renderer({ canvas, antialias: true, alpha: true });
         // this.renderer.autoClearColor = false;
         // this.renderer.state.setCullFace(CullFaceNone);
-        
+
 
         this.scene = new Scene();
         this.animation = new AnimationController(this);
@@ -56,7 +57,7 @@ export class Viewer {
         this.renderHandler = this.render.bind(this);
 
         this.camera = new PerspectiveCamera(45, canvas.width / canvas.height, 0.1, 1000);
-        this.camera.position.z = 3;
+        this.camera.position.z = 10;
 
         this.clock = new Clock();
 
@@ -180,20 +181,18 @@ export class Viewer {
 
                 this.modelGroup = gltf.scene;
                 this.modelReticle = reticle.scene;
+                this.started = true;
                 callback && callback();
             });
-
         });
     }
-
-
     render() {
         requestAnimationFrame(this.renderHandler);
-        this.renderer.render(this.scene,this.camera);
+        this.renderer.render(this.scene, this.camera);
         const dt = this.clock.getDelta();
         this.animation.update(dt);
     }
-
+    
 
     destroy() {
         this.platform.dispose();

@@ -1,4 +1,4 @@
 <view >
-    <canvas type="webgl" id="cameraTexture" style="width: 100vw; height: 100vh; background: black;"></canvas>
-    <canvas type="webgl" id="webgl" style="width: {{width}}px; height: {{height}}px; z-index: 99; position: absolute;top:0;left:0;" bindtouchend="onTouchEnd"></canvas>
+    <canvas type="webgl" id="cameraTexture" style="width: 100%; height: 100%; position: absolute;top:0;left:0;"></canvas>
+    <canvas type="webgl" id="webgl" style=" width: 100%; height: 100%; z-index: 99; position: absolute;top:0;left:0;" bindtouchend="onTouchEnd"></canvas>
 </view>

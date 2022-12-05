@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<link type="text/css" rel="stylesheet" href="main.css">
-		<!-- WebGPU (For Chrome 94-97), expires 12/13/2021 -->
+		<!-- WebGPU (For Chrome 94-97), expires 10/11/2021 -->
 		<meta http-equiv="origin-trial" content="Agfr4hEaaoH1kaTtGTZY4OU2lQQOv+gWq+8rYeHZBPWNnLww/smePFCIJOUdRFnQZkO3KAio+SNJapjzaoyFfQQAAABLeyJvcmlnaW4iOiJodHRwczovL3RocmVlanMub3JnOjQ0MyIsImZlYXR1cmUiOiJXZWJHUFUiLCJleHBpcnkiOjE2NDMxNTUxOTl9">
 	</head>
 	<body>
@@ -29,7 +29,6 @@
 			import { OrbitControls } from './jsm/controls/OrbitControls.js';
 
 			import * as Nodes from './jsm/renderers/nodes/Nodes.js';
-			import { addTo } from './jsm/renderers/nodes/ShaderNode.js';
 
 			let camera, scene, renderer;
 
@@ -89,16 +88,17 @@
 
 				// custom lighting model
 
-				const customLightingModel = new Nodes.ShaderNode( ( inputs ) => {
+				const customLightingModel = new Nodes.FunctionNode( `
+					void ( inout ReflectedLight reflectedLight, vec3 lightColor ) {
 
-					const { lightColor, directDiffuse } = inputs;
+						// lightColor returns the light color with the intensity calculated
 
-					addTo( directDiffuse, lightColor );
+						reflectedLight.directDiffuse += lightColor;
 
-				} );
+					}` );
 
 				const lightingModelContext = new Nodes.ContextNode( allLightsNode );
-				lightingModelContext.context.lightingModel = customLightingModel;
+				lightingModelContext.setContextValue( 'lightingModel', customLightingModel );
 
 				materialPoints.lightNode = lightingModelContext;
 

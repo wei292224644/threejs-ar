@@ -78,7 +78,7 @@ class WebGPUBindings {
 
 	}
 
-	update( object ) {
+	update( object, camera ) {
 
 		const textures = this.textures;
 
@@ -141,10 +141,10 @@ class WebGPUBindings {
 
 				const texture = binding.getTexture();
 
-				const needsTextureRefresh = textures.updateTexture( texture );
+				const forceUpdate = textures.updateTexture( texture );
 				const textureGPU = textures.getTextureGPU( texture );
 
-				if ( textureGPU !== undefined && binding.textureGPU !== textureGPU || needsTextureRefresh === true ) {
+				if ( binding.textureGPU !== textureGPU || forceUpdate === true ) {
 
 					binding.textureGPU = textureGPU;
 					needsBindGroupRefresh = true;

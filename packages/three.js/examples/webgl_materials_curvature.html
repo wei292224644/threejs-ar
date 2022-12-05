@@ -46,7 +46,7 @@
 
 			import * as THREE from '../build/three.module.js';
 
-			import { GUI } from './jsm/libs/lil-gui.module.min.js';
+			import { GUI } from './jsm/libs/dat.gui.module.js';
 			import { OrbitControls } from './jsm/controls/OrbitControls.js';
 			import { OBJLoader } from './jsm/loaders/OBJLoader.js';
 
@@ -323,11 +323,13 @@
 					}
 				};
 
-				const gui = new GUI( { title: 'Topology' } );
+				const gui = new GUI();
 
-				gui.add( params, 'filterConvex' );
-				gui.add( params, 'filterConcave' );
-				gui.add( params, 'filterBoth' );
+				const topologyFolder = gui.addFolder( 'Topology' );
+				topologyFolder.add( params, 'filterConvex' );
+				topologyFolder.add( params, 'filterConcave' );
+				topologyFolder.add( params, 'filterBoth' );
+				topologyFolder.open();
 
 				onWindowResize();
 
