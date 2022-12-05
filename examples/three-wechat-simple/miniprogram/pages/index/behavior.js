@@ -54,10 +54,10 @@ export default function getBehavior() {
                 this.viewer.init({
                     // id: "w4brnnfq_gwl",
                     // version: 10,
-                    //  id: "zmcugkwi_13o"
+                     id: "zmcugkwi_13o"
                     // id: "glehb55g_a2u",
                     // version:2,
-                    id: "450yztqd_mh5"
+                    // id: "450yztqd_mh5"
                 }, () => {
                     console.log("started");
                     for (const [key, clip] of this.viewer.animation.clips) {

@@ -13,7 +13,8 @@ import {
     Scene,
     sRGBEncoding,
     WebGL1Renderer,
-    CullFaceNone
+    CullFaceNone,
+    CubeTextureLoader
 } from "three";
 import { AssetsLoaderList } from "./assets-loader";
 
@@ -128,8 +129,20 @@ export class Viewer {
                 reticle.scene.visible = false;
 
 
-                hdr.mapping = EquirectangularReflectionMapping;
-                this.scene.environment = hdr;
+                // hdr.mapping = EquirectangularReflectionMapping;
+                // this.scene.environment = hdr;
+
+
+                const path = 'https://demo.uality.cn/cubemap/SwedishRoyalCastle/';
+                const format = '.jpg';
+                const urls = [
+                    path + 'px' + format, path + 'nx' + format,
+                    path + 'py' + format, path + 'ny' + format,
+                    path + 'pz' + format, path + 'nz' + format
+                ];
+
+                const reflectionCube = new CubeTextureLoader().load(urls);
+                this.scene.environment = reflectionCube;
 
 
                 switch (data.scene.tonemapping) {
@@ -192,7 +205,7 @@ export class Viewer {
         const dt = this.clock.getDelta();
         this.animation.update(dt);
     }
-    
+
 
     destroy() {
         this.platform.dispose();
