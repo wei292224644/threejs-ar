@@ -14,7 +14,8 @@ import {
     sRGBEncoding,
     WebGL1Renderer,
     CullFaceNone,
-    CubeTextureLoader
+    CubeTextureLoader,
+    NoToneMapping
 } from "three";
 import { AssetsLoaderList } from "./assets-loader";
 
@@ -132,25 +133,25 @@ export class Viewer {
                 reticle.scene.visible = false;
 
 
-                hdr.mapping = EquirectangularReflectionMapping;
+                // hdr.mapping = EquirectangularReflectionMapping;
                 // this.scene.environment = hdr;
 
 
-                // const path = 'https://demo.uality.cn/cubemap/SwedishRoyalCastle/';
-                // const format = '.jpg';
-                // const urls = [
-                //     path + 'px' + format, path + 'nx' + format,
-                //     path + 'py' + format, path + 'ny' + format,
-                //     path + 'pz' + format, path + 'nz' + format
-                // ];
+                const path = 'https://demo.uality.cn/cubemap/SwedishRoyalCastle/';
+                const format = '.jpg';
+                const urls = [
+                    path + 'px' + format, path + 'nx' + format,
+                    path + 'py' + format, path + 'ny' + format,
+                    path + 'pz' + format, path + 'nz' + format
+                ];
 
-                // const reflectionCube = new CubeTextureLoader().load(urls);
-                // this.scene.environment = reflectionCube;
+                const reflectionCube = new CubeTextureLoader().load(urls);
+                this.scene.environment = reflectionCube;
 
                 const bindEnvMap = (node: any) => {
 
                     if (node.material) {
-                        node.material.envMap = hdr;
+                        node.material.envMap = reflectionCube;
                     }
 
                     for (let i = 0; i < node.children.length; i++) {
@@ -162,31 +163,32 @@ export class Viewer {
                 bindEnvMap(gltf.scene);
 
 
-                switch (data.scene.tonemapping) {
-                    case "1":
-                        //linear
-                        this.renderer.toneMapping = LinearToneMapping;
-                        break;
-                    case "2":
-                        //filmic
-                        this.renderer.toneMapping = ACESFilmicToneMapping;
-                        break;
-                    case "3":
-                        //hejl
-                        this.renderer.toneMapping = ReinhardToneMapping;
-                        break;
-                    case "4":
-                        //ACES filmic
-                        this.renderer.toneMapping = ACESFilmicToneMapping;
-                        break;
-                    case "5":
-                        //ACES v2 filmic
-                        this.renderer.toneMapping = ReinhardToneMapping;
-                        break;
-                }
+                // switch (data.scene.tonemapping) {
+                //     case "1":
+                //         //linear
+                //         this.renderer.toneMapping = LinearToneMapping;
+                //         break;
+                //     case "2":
+                //         //filmic
+                //         this.renderer.toneMapping = ACESFilmicToneMapping;
+                //         break;
+                //     case "3":
+                //         //hejl
+                //         this.renderer.toneMapping = ReinhardToneMapping;
+                //         break;
+                //     case "4":
+                //         //ACES filmic
+                //         this.renderer.toneMapping = ACESFilmicToneMapping;
+                //         break;
+                //     case "5":
+                //         //ACES v2 filmic
+                //         this.renderer.toneMapping = ReinhardToneMapping;
+                //         break;
+                // }
 
-                this.renderer.toneMappingExposure = data.scene.tonemapping_exposure;
+                // this.renderer.toneMappingExposure = data.scene.tonemapping_exposure;
 
+                this.renderer.toneMapping = NoToneMapping;
 
 
                 this.animation.setClips(gltf.animations);
