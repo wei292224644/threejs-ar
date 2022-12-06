@@ -133,25 +133,25 @@ export class Viewer {
                 reticle.scene.visible = false;
 
 
-                // hdr.mapping = EquirectangularReflectionMapping;
-                // this.scene.environment = hdr;
+                hdr.mapping = EquirectangularReflectionMapping;
+                this.scene.environment = hdr;
 
 
-                const path = 'https://demo.uality.cn/cubemap/SwedishRoyalCastle/';
-                const format = '.jpg';
-                const urls = [
-                    path + 'px' + format, path + 'nx' + format,
-                    path + 'py' + format, path + 'ny' + format,
-                    path + 'pz' + format, path + 'nz' + format
-                ];
+                // const path = 'https://demo.uality.cn/cubemap/SwedishRoyalCastle/';
+                // const format = '.jpg';
+                // const urls = [
+                //     path + 'px' + format, path + 'nx' + format,
+                //     path + 'py' + format, path + 'ny' + format,
+                //     path + 'pz' + format, path + 'nz' + format
+                // ];
 
-                const reflectionCube = new CubeTextureLoader().load(urls);
-                this.scene.environment = reflectionCube;
+                // const reflectionCube = new CubeTextureLoader().load(urls);
+                // this.scene.environment = reflectionCube;
 
                 const bindEnvMap = (node: any) => {
 
                     if (node.material) {
-                        node.material.envMap = reflectionCube;
+                        node.material.envMap = hdr;
                     }
 
                     for (let i = 0; i < node.children.length; i++) {
