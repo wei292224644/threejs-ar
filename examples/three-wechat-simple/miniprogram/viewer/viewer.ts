@@ -126,23 +126,40 @@ export class Viewer {
                 this.scene.add(gltf.scene)
                 this.scene.add(reticle.scene)
 
+
+
+
                 reticle.scene.visible = false;
 
 
-                // hdr.mapping = EquirectangularReflectionMapping;
+                hdr.mapping = EquirectangularReflectionMapping;
                 // this.scene.environment = hdr;
 
 
-                const path = 'https://demo.uality.cn/cubemap/SwedishRoyalCastle/';
-                const format = '.jpg';
-                const urls = [
-                    path + 'px' + format, path + 'nx' + format,
-                    path + 'py' + format, path + 'ny' + format,
-                    path + 'pz' + format, path + 'nz' + format
-                ];
+                // const path = 'https://demo.uality.cn/cubemap/SwedishRoyalCastle/';
+                // const format = '.jpg';
+                // const urls = [
+                //     path + 'px' + format, path + 'nx' + format,
+                //     path + 'py' + format, path + 'ny' + format,
+                //     path + 'pz' + format, path + 'nz' + format
+                // ];
 
-                const reflectionCube = new CubeTextureLoader().load(urls);
-                this.scene.environment = reflectionCube;
+                // const reflectionCube = new CubeTextureLoader().load(urls);
+                // this.scene.environment = reflectionCube;
+
+                const bindEnvMap = (node: any) => {
+
+                    if (node.material) {
+                        node.material.envMap = hdr;
+                    }
+
+                    for (let i = 0; i < node.children.length; i++) {
+                        const child = node.children[i];
+                        bindEnvMap(child);
+                    }
+                }
+
+                bindEnvMap(gltf.scene);
 
 
                 switch (data.scene.tonemapping) {
