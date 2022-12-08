@@ -21,7 +21,7 @@ const mergeRollupOptions = (rollupOptions: RollupOptions, cfg: mergeRollupOption
       },
       rollupOptions,
     ),
-    { minify: true, platformizePlugins: platformize(), ...cfg },
+    { minify: false, platformizePlugins: platformize(), ...cfg },
   );
 };
 

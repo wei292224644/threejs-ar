@@ -13,9 +13,9 @@ import {
     Scene,
     sRGBEncoding,
     WebGL1Renderer,
-    CullFaceNone,
     CubeTextureLoader,
-    NoToneMapping
+    MeshBasicMaterial,
+    Object3D
 } from "three";
 import { AssetsLoaderList } from "./assets-loader";
 
@@ -23,13 +23,17 @@ import { AssetsLoaderList } from "./assets-loader";
 
 export const publishPath = "https://emw-pub.uality.cn/";
 
+type ViewerOptions = {
+    isKirin?: boolean
+}
+
 export class Viewer {
 
     private frameId: number = 0;
     private platform: WechatPlatform;
 
     modelReticle?: Group;
-    modelGroup?: Group;
+    modelGroup?: Object3D;
     animation: AnimationController;
     renderHandler;
     renderer: WebGL1Renderer;
@@ -38,9 +42,13 @@ export class Viewer {
     clock: Clock;
 
     audioContext: any;
-    private started = false;
 
-    constructor(canvas: any, audioContext: any) {
+
+
+    private isKirin = false;
+
+    constructor(canvas: any, audioContext: any, options?: ViewerOptions) {
+
 
         this.audioContext = audioContext;
 
@@ -61,25 +69,15 @@ export class Viewer {
         this.camera = new PerspectiveCamera(45, canvas.width / canvas.height, 0.1, 1000);
         this.camera.position.z = 10;
 
+
         this.clock = new Clock();
 
         this.renderer.outputEncoding = sRGBEncoding;
-        // this.renderer.setSize(window.innerWidth, window.innerHeight);
-        this.renderer.setPixelRatio(window.devicePixelRatio);
-
-        // const resize = () => {
-        //     canvas.width = window.innerWidth;
-        //     canvas.height = window.innerHeight;
-
-        //     this.camera.aspect = canvas.width / canvas.height;
-        //     this.camera.updateProjectionMatrix();
-
-        //     this.renderer.setSize(canvas.width, canvas.height);
-        // }
-
-        // resize();
-        // window.addEventListener("resize", resize, false);
+        // this.renderer.setPixelRatio(window.devicePixelRatio);
     }
+
+
+
 
     init(options: any, callback?: () => void) {
         let jpath = publishPath + options.id + "/" + (options.version || "latest") + "/publish.json";
@@ -101,10 +99,13 @@ export class Viewer {
                     type: "hdr"
                 },
                 "reticle": {
-                    url: 'https://emw-pub.uality.cn/drnokeie_efi/2/drnokeie_efi.glb',
+                    url: 'https://emw-pub.uality.cn/drnokeie_efi/2/drnokeie_efi_sceneViewer.glb',
+                    type: "gltf"
+                },
+                "outsidePortal": {
+                    url: 'https://emw-pub.uality.cn/g1uixcyk_tm4/7/g1uixcyk_tm4_sceneViewer.glb',
                     type: "gltf"
                 }
-
             }
 
 
@@ -118,77 +119,95 @@ export class Viewer {
             const assets = new AssetsLoaderList(assetDatas);
 
 
+            const rootBone = new Object3D();
+            this.scene.add(rootBone);
+
             assets.load().then((res: any) => {
 
                 const gltf = res.gltf;
                 const reticle = res.reticle;
+                const outsidePortal = res.outsidePortal;
                 const hdr = res.hdr as DataTexture;
 
-                this.scene.add(gltf.scene)
-                this.scene.add(reticle.scene)
 
 
-
-
-                reticle.scene.visible = false;
-
-
-                hdr.mapping = EquirectangularReflectionMapping;
-                this.scene.environment = hdr;
-
-
-                // const path = 'https://demo.uality.cn/cubemap/SwedishRoyalCastle/';
-                // const format = '.jpg';
-                // const urls = [
-                //     path + 'px' + format, path + 'nx' + format,
-                //     path + 'py' + format, path + 'ny' + format,
-                //     path + 'pz' + format, path + 'nz' + format
-                // ];
-
-                // const reflectionCube = new CubeTextureLoader().load(urls);
-                // this.scene.environment = reflectionCube;
-
-                const bindEnvMap = (node: any) => {
-
-                    if (node.material) {
-                        node.material.envMap = hdr;
+                const outsideMat = new MeshBasicMaterial({
+                    colorWrite: false,
+                })
+                const setRenderOrder = (node: any) => {
+                    console.log(node);
+                    if (node.type == "Mesh") {
+                        node.renderOrder = -1;
+                        node.material = outsideMat;
                     }
 
                     for (let i = 0; i < node.children.length; i++) {
                         const child = node.children[i];
-                        bindEnvMap(child);
+                        setRenderOrder(child);
                     }
                 }
+                setRenderOrder(outsidePortal.scene);
 
-                bindEnvMap(gltf.scene);
+                outsidePortal.scene.position.z = 0.1;
 
 
-                // switch (data.scene.tonemapping) {
-                //     case "1":
-                //         //linear
-                //         this.renderer.toneMapping = LinearToneMapping;
-                //         break;
-                //     case "2":
-                //         //filmic
-                //         this.renderer.toneMapping = ACESFilmicToneMapping;
-                //         break;
-                //     case "3":
-                //         //hejl
-                //         this.renderer.toneMapping = ReinhardToneMapping;
-                //         break;
-                //     case "4":
-                //         //ACES filmic
-                //         this.renderer.toneMapping = ACESFilmicToneMapping;
-                //         break;
-                //     case "5":
-                //         //ACES v2 filmic
-                //         this.renderer.toneMapping = ReinhardToneMapping;
-                //         break;
-                // }
+                if (this.isKirin) {
+                    const path = 'https://demo.uality.cn/cubemap/59/';
+                    const format = '.jpg';
+                    const urls = [
+                        path + 'px' + format, path + 'nx' + format,
+                        path + 'py' + format, path + 'ny' + format,
+                        path + 'pz' + format, path + 'nz' + format
+                    ];
 
-                // this.renderer.toneMappingExposure = data.scene.tonemapping_exposure;
+                    const reflectionCube = new CubeTextureLoader().load(urls);
+                    this.scene.environment = reflectionCube;
 
-                this.renderer.toneMapping = NoToneMapping;
+                    const bindEnvMap = (node: any) => {
+
+                        if (node.material) {
+                            node.material.envMap = reflectionCube;
+                        }
+
+                        for (let i = 0; i < node.children.length; i++) {
+                            const child = node.children[i];
+                            bindEnvMap(child);
+                        }
+                    }
+
+                    bindEnvMap(gltf.scene);
+                } else {
+                    hdr.mapping = EquirectangularReflectionMapping;
+                    this.scene.environment = hdr;
+                }
+
+
+                switch (data.scene.tonemapping) {
+                    case "1":
+                        //linear
+                        this.renderer.toneMapping = LinearToneMapping;
+                        break;
+                    case "2":
+                        //filmic
+                        this.renderer.toneMapping = ACESFilmicToneMapping;
+                        break;
+                    case "3":
+                        //hejl
+                        this.renderer.toneMapping = ReinhardToneMapping;
+                        break;
+                    case "4":
+                        //ACES filmic
+                        this.renderer.toneMapping = ACESFilmicToneMapping;
+                        break;
+                    case "5":
+                        //ACES v2 filmic
+                        this.renderer.toneMapping = ReinhardToneMapping;
+                        break;
+                }
+
+                this.renderer.toneMappingExposure = data.scene.tonemapping_exposure;
+
+                // this.renderer.toneMapping = NoToneMapping;
 
 
                 this.animation.setClips(gltf.animations);
@@ -211,9 +230,15 @@ export class Viewer {
                     this.animation.setAudios(audios);
                 }
 
-                this.modelGroup = gltf.scene;
+                rootBone.add(gltf.scene);
+                rootBone.add(outsidePortal.scene);
+
+                reticle.scene.visible = false;
+                this.scene.add(reticle.scene);
+
+                this.modelGroup = rootBone;
                 this.modelReticle = reticle.scene;
-                this.started = true;
+
                 callback && callback();
             });
         });
@@ -224,7 +249,6 @@ export class Viewer {
         const dt = this.clock.getDelta();
         this.animation.update(dt);
     }
-
 
     destroy() {
         this.platform.dispose();

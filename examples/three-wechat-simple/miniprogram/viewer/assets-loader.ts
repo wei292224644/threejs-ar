@@ -42,7 +42,6 @@ export class AssetsLoaderList {
 
             const onLoad = () => {
                 idx++;
-                console.log(idx);
 
                 if (idx >= length)
                     resolve(res);

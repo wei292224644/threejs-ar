@@ -1,4 +1,6 @@
-import { Viewer } from "../viewer/viewer";
+import {
+    Viewer
+} from "../viewer/viewer";
 
 export default function getBehavior() {
     return Behavior({
@@ -39,8 +41,7 @@ export default function getBehavior() {
                         this.initVK()
                     })
             },
-            onUnload() {
-            },
+            onUnload() { },
             initVK() {
 
                 this.innerAudioContext = wx.createInnerAudioContext({
@@ -49,31 +50,31 @@ export default function getBehavior() {
                 this.innerAudioContext.loop = true;
 
                 const canvas = this.canvas;
-
                 this.viewer = new Viewer(canvas, this.innerAudioContext);
                 this.viewer.init({
                     // id: "w4brnnfq_gwl",
                     // version: 10,
-                     id: "zmcugkwi_13o"
+                    // id: "zmcugkwi_13o",
+                    id: "gddebkfo_yrj",
                     // id: "glehb55g_a2u",
                     // version:2,
                     // id: "450yztqd_mh5"
                 }, () => {
                     console.log("started");
+
                     for (const [key, clip] of this.viewer.animation.clips) {
                         this.viewer.animation.play(key);
                         break;
                     }
-
 
                     const info = wx.getSystemInfoSync()
                     calcSize(info.windowWidth, info.windowHeight, info.pixelRatio);
                 });
                 this.viewer.render();
 
+
                 // 自定义初始化
                 if (this.init) this.init()
-
 
                 const calcSize = (width, height, pixelRatio) => {
                     console.log(`canvas size: width = ${width} , height = ${height}`)
@@ -92,9 +93,8 @@ export default function getBehavior() {
                     })
                 }
 
-
                 const info = wx.getSystemInfoSync()
-                calcSize(info.windowWidth, info.windowHeight, info.pixelRatio);
+                calcSize(info.windowWidth, info.windowHeight, info.pixelRatio / 1.5);
 
                 const session = this.session = wx.createVKSession({
                     track: {
@@ -108,7 +108,7 @@ export default function getBehavior() {
 
                 session.on('resize', () => {
                     const info = wx.getSystemInfoSync()
-                    calcSize(info.windowWidth, info.windowHeight, info.pixelRatio)
+                    calcSize(info.windowWidth, info.windowHeight, info.pixelRatio / 1.5)
                 })
                 session.start(err => {
                     if (err) return console.error('VK error: ', err)

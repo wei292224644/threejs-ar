@@ -8,6 +8,7 @@ Component({
     behaviors: [getBehavior(), yuvBehavior],
     data: {
         theme: 'light',
+        
     },
     lifetimes: {
         /**
