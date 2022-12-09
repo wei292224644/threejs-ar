@@ -48,7 +48,8 @@ export class Viewer {
     private isKirin = false;
 
     constructor(canvas: any, audioContext: any, options?: ViewerOptions) {
-
+        options = options || {};
+        this.isKirin = !!options.isKirin;
 
         this.audioContext = audioContext;
 
