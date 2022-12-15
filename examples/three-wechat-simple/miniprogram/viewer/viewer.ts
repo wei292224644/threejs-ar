@@ -103,10 +103,10 @@ export class Viewer {
                     url: 'https://emw-pub.uality.cn/drnokeie_efi/2/drnokeie_efi_sceneViewer.glb',
                     type: "gltf"
                 },
-                "outsidePortal": {
-                    url: 'https://emw-pub.uality.cn/g1uixcyk_tm4/7/g1uixcyk_tm4_sceneViewer.glb',
-                    type: "gltf"
-                }
+                // "outsidePortal": {
+                //     url: 'https://emw-pub.uality.cn/g1uixcyk_tm4/7/g1uixcyk_tm4_sceneViewer.glb',
+                //     type: "gltf"
+                // }
             }
 
 
@@ -132,24 +132,24 @@ export class Viewer {
 
 
 
-                const outsideMat = new MeshBasicMaterial({
-                    colorWrite: false,
-                })
-                const setRenderOrder = (node: any) => {
-                    console.log(node);
-                    if (node.type == "Mesh") {
-                        node.renderOrder = -1;
-                        node.material = outsideMat;
-                    }
+                // const outsideMat = new MeshBasicMaterial({
+                //     colorWrite: false,
+                // })
+                // const setRenderOrder = (node: any) => {
+                //     console.log(node);
+                //     if (node.type == "Mesh") {
+                //         node.renderOrder = -1;
+                //         node.material = outsideMat;
+                //     }
 
-                    for (let i = 0; i < node.children.length; i++) {
-                        const child = node.children[i];
-                        setRenderOrder(child);
-                    }
-                }
-                setRenderOrder(outsidePortal.scene);
+                //     for (let i = 0; i < node.children.length; i++) {
+                //         const child = node.children[i];
+                //         setRenderOrder(child);
+                //     }
+                // }
+                // setRenderOrder(outsidePortal.scene);
 
-                outsidePortal.scene.position.z = 0.1;
+                // outsidePortal.scene.position.z = 0.1;
 
 
                 if (this.isKirin) {
@@ -232,7 +232,7 @@ export class Viewer {
                 }
 
                 rootBone.add(gltf.scene);
-                rootBone.add(outsidePortal.scene);
+                // rootBone.add(outsidePortal.scene);
 
                 reticle.scene.visible = false;
                 this.scene.add(reticle.scene);
