@@ -1,5 +1,5 @@
 import {
-    Viewer
+    Scene1
 } from "../viewer/viewer";
 
 export default function getBehavior() {
@@ -19,6 +19,7 @@ export default function getBehavior() {
                     .exec(textureRes => {
                         this.textureCanvasGL = textureRes[0].node.getContext('webgl');
                     })
+               
                 wx.createSelectorQuery()
                     .select('#webgl')
                     .node()
@@ -40,6 +41,9 @@ export default function getBehavior() {
 
                         this.initVK()
                     })
+
+
+
             },
             onUnload() { },
             initVK() {
@@ -50,27 +54,36 @@ export default function getBehavior() {
                 this.innerAudioContext.loop = true;
 
                 const canvas = this.canvas;
-                this.viewer = new Viewer(canvas, this.innerAudioContext);
-                this.viewer.init({
-                    // id: "w4brnnfq_gwl",
-                    // version: 10,
-                    // id: "zmcugkwi_13o",
-                    id: "gddebkfo_yrj",
-                    // id: "glehb55g_a2u",
-                    // version:2,
-                    // id: "450yztqd_mh5"
-                }, () => {
-                    console.log("started");
-
-                    for (const [key, clip] of this.viewer.animation.clips) {
-                        this.viewer.animation.play(key);
-                        break;
-                    }
-
-                    const info = wx.getSystemInfoSync()
-                    calcSize(info.windowWidth, info.windowHeight, info.pixelRatio);
+                this.viewer = new Scene1(canvas, this.innerAudioContext);
+                this.viewer.init(() => {
                 });
                 this.viewer.render();
+
+                // this.viewer = new Viewer(canvas, this.innerAudioContext,{
+                //     isKirin:true
+                // });
+                // this.viewer.init({
+                //     // id: "w4brnnfq_gwl",
+                //     // version: 10,
+                //     // id: "zmcugkwi_13o",
+                //     // id: "gddebkfo_yrj",
+                //     // id: "glehb55g_a2u",
+                //     // version:2,
+                //     // id: "450yztqd_mh5",
+                //     id:"scene1"
+                // }, () => {
+                //     console.log("started");
+
+                //     // for (const [key, clip] of this.viewer.animation.clips) {
+                //     //     this.viewer.animation.play(key);
+                //     //     break;
+                //     // }
+
+                //     const info = wx.getSystemInfoSync()
+                //     calcSize(info.windowWidth, info.windowHeight, info.pixelRatio);
+                // });
+
+                // this.viewer.render();
 
 
                 // 自定义初始化

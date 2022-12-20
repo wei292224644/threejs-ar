@@ -16,7 +16,7 @@ function mergeRollupOptions(
     platformizePlugins?: Plugin[];
     hotcode?: HotCodeProps;
   } = {
-    minify: true,
+    minify: false,
     platformizePlugins: platformize(),
   },
 ) {

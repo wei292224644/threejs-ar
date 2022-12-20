@@ -1,4 +1,5 @@
-<view >
+<view>
     <canvas type="webgl" id="cameraTexture" style="width: 100%; height: 100%; position: absolute;top:0;left:0;"></canvas>
     <canvas type="webgl" id="webgl" style=" width: 100%; height: 100%; z-index: 99; position: absolute;top:0;left:0;" bindtouchend="onTouchEnd"></canvas>
+    <!-- <canvas style="position: absolute;left: 0;top:300rpx;background-color: red;" type="2d" id="target1"></canvas> -->
 </view>

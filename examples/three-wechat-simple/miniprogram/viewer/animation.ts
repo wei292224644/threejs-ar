@@ -9,14 +9,13 @@ type AudioState = {
     src: string
 }
 export class AnimationController {
-    private mixer: AnimationMixer;
-
+    mixer: AnimationMixer;
 
     private clips = new Map<string, AnimationClip>();
 
     private audios = new Map<string, AudioState>();
 
-    private currentClip?: AnimationClip | undefined;
+    currentClip?: AnimationClip | undefined;
 
     constructor(private viewer: Viewer) {
         this.mixer = new AnimationMixer(this.viewer.scene);

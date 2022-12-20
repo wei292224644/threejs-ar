@@ -12,7 +12,7 @@ export default mergeRollupOptions(
     },
   },
   {
-    minify: process.env.BUILD === 'production',
+    minify: false,
     hotcode: { log: firelog, mode: process.env.HOTCODE_MODE },
   },
 );
