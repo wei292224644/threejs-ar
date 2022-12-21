@@ -6576,8 +6576,8 @@ class Viewer {
 
 // import VideoPlayer from "./video-player";
 
-const SCENE_ID = "2g3xfoei_3y0";
-const SCENE_VERSION = "8";
+const SCENE_ID = "2wccqlzo_p2l";
+const SCENE_VERSION = "12";
 
 class Scene1 extends Viewer {
 
@@ -6706,6 +6706,8 @@ class Scene1 extends Viewer {
 
 
     async changeMaterialVariants(idx) {
+
+        if (!this.gltf.userData || !this.gltf.userData.materialVariants) return;
 
         if (this.variantIdx == idx) return;
 

@@ -3,8 +3,8 @@ import { AssetsLoaderList } from "./assets-loader";
 import { publishPath, Viewer, ViewerOptions } from "./base";
 // import VideoPlayer from "./video-player";
 
-const SCENE_ID = "2g3xfoei_3y0";
-const SCENE_VERSION = "8";
+const SCENE_ID = "2wccqlzo_p2l";
+const SCENE_VERSION = "12";
 
 export class Scene1 extends Viewer {
 
@@ -135,6 +135,8 @@ export class Scene1 extends Viewer {
 
 
     async changeMaterialVariants(idx: number) {
+
+        if (!this.gltf.userData || !this.gltf.userData.materialVariants) return;
 
         if (this.variantIdx == idx) return;
 
