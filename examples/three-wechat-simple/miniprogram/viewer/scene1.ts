@@ -4,7 +4,7 @@ import { publishPath, Viewer, ViewerOptions } from "./base";
 // import VideoPlayer from "./video-player";
 
 const SCENE_ID = "2wccqlzo_p2l";
-const SCENE_VERSION = "latest";
+const SCENE_VERSION = "16";
 
 export class Scene1 extends Viewer {
 

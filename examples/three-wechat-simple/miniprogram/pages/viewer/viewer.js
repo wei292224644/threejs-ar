@@ -4773,13 +4773,15 @@ class AssetsLoaderList {
 class AnimationController {
     
 
-     __init() {this.clips = new Map();}
+     __init() {this.paused = false;}
 
-     __init2() {this.audios = new Map();}
+     __init2() {this.clips = new Map();}
+
+     __init3() {this.audios = new Map();}
 
     
 
-    constructor( viewer) {this.viewer = viewer;AnimationController.prototype.__init.call(this);AnimationController.prototype.__init2.call(this);AnimationController.prototype.__init3.call(this);
+    constructor( viewer) {this.viewer = viewer;AnimationController.prototype.__init.call(this);AnimationController.prototype.__init2.call(this);AnimationController.prototype.__init3.call(this);AnimationController.prototype.__init4.call(this);
         this.mixer = new three.AnimationMixer(this.viewer.scene);
     }
 
@@ -4811,7 +4813,19 @@ class AnimationController {
 
         this.mixer.clipAction(clip, this.viewer.scene).play();
         this.currentClip = clip;
-        // this.mixer.clipAction(gltf.animations[0], gltf.scene).play();
+
+
+        this.paused = false;
+    }
+
+    pause() {
+        this.paused = true;
+        this.viewer.audioContext.pause();
+    }
+
+    resume() {
+        this.paused = false;
+        this.viewer.audioContext.play();
     }
 
     stop() {
@@ -4831,9 +4845,12 @@ class AnimationController {
         }
     }
 
-    __init3() {this.update = (() => {
+    __init4() {this.update = (() => {
         let cacheTime = 0;
         return (dt) => {
+
+            if (this.paused) return;
+
             this.mixer.update(dt);
 
             if (this.currentClip) {
@@ -6577,7 +6594,7 @@ class Viewer {
 // import VideoPlayer from "./video-player";
 
 const SCENE_ID = "2wccqlzo_p2l";
-const SCENE_VERSION = "latest";
+const SCENE_VERSION = "16";
 
 class Scene1 extends Viewer {
 

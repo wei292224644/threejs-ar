@@ -19,7 +19,7 @@ export default function getBehavior() {
                     .exec(textureRes => {
                         this.textureCanvasGL = textureRes[0].node.getContext('webgl');
                     })
-               
+
                 wx.createSelectorQuery()
                     .select('#webgl')
                     .node()
@@ -56,6 +56,14 @@ export default function getBehavior() {
                 const canvas = this.canvas;
                 this.viewer = new Scene1(canvas, this.innerAudioContext);
                 this.viewer.init(() => {
+
+                    // setTimeout(() => {
+                    //     this.viewer.animation.pause();
+                    // },3000)
+
+                    // setTimeout(()=>{
+                    //     this.viewer.animation.resume();
+                    // },5000)
                 });
                 this.viewer.render();
 

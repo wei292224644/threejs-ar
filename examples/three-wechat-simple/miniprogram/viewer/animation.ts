@@ -11,6 +11,8 @@ type AudioState = {
 export class AnimationController {
     mixer: AnimationMixer;
 
+    private paused = false;
+
     private clips = new Map<string, AnimationClip>();
 
     private audios = new Map<string, AudioState>();
@@ -49,7 +51,19 @@ export class AnimationController {
 
         this.mixer.clipAction(clip, this.viewer.scene).play();
         this.currentClip = clip;
-        // this.mixer.clipAction(gltf.animations[0], gltf.scene).play();
+
+
+        this.paused = false;
+    }
+
+    pause() {
+        this.paused = true;
+        this.viewer.audioContext.pause();
+    }
+
+    resume() {
+        this.paused = false;
+        this.viewer.audioContext.play();
     }
 
     stop() {
@@ -72,6 +86,9 @@ export class AnimationController {
     update = (() => {
         let cacheTime = 0;
         return (dt: number) => {
+
+            if (this.paused) return;
+
             this.mixer.update(dt);
 
             if (this.currentClip) {
