@@ -1,4 +1,4 @@
-import { CanvasTexture, Color, DoubleSide, EquirectangularReflectionMapping, FileLoader, Mesh, MeshBasicMaterial, NearestFilter, PlaneGeometry, TextureLoader, VideoTexture } from "three";
+import { EquirectangularReflectionMapping, FileLoader } from "three";
 import { AssetsLoaderList } from "./assets-loader";
 import { publishPath, Viewer, ViewerOptions } from "./base";
 // import VideoPlayer from "./video-player";
