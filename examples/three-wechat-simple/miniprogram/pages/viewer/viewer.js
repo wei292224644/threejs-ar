@@ -6577,7 +6577,7 @@ class Viewer {
 // import VideoPlayer from "./video-player";
 
 const SCENE_ID = "2wccqlzo_p2l";
-const SCENE_VERSION = "12";
+const SCENE_VERSION = "latest";
 
 class Scene1 extends Viewer {
 
