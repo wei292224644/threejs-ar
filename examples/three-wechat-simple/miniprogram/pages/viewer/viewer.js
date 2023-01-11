@@ -6686,37 +6686,6 @@ class Scene1 extends Viewer {
 
         this.animation.play("Take 001");
 
-
-        // const material = new MeshBasicMaterial({ side: DoubleSide });
-        // const bg = gltf.scene.getObjectByName("part_012");
-        // bg.material.color = new Color(0x333333);
-
-
-        // var material = new MeshBasicMaterial({ side: DoubleSide });
-        // var geometry = new PlaneGeometry(100, 100 / 2, 1);
-        // var plane3 = new Mesh(geometry, material);
-        // this.modelGroup.add(plane3);
-
-        // var textureLoader = new TextureLoader();
-
-        // this.videoPlayer.playVideo('target1', 'https://demo.uality.cn/Telefonica.mp4', async (res: any) => {
-        //     if (res) {
-        //         textureLoader.load(res, texture => { // 加载datauri数据到纹理，一定要写在回调里，不然也看着卡顿
-        //             texture.minFilter = NearestFilter
-        //             plane3.material.map = texture
-        //         });
-
-        //     }
-
-        // }).then(res => {
-        //     this.vp = res;
-        //     const context = res.context;
-
-        //     const canvasTexture = new CanvasTexture(context.canvas);
-        //     canvasTexture.minFilter = NearestFilter;
-        //     bg.material.map = canvasTexture;
-        // })
-
         callback && callback();
     }
 
@@ -6821,15 +6790,15 @@ class Scene2 extends Viewer {
         const hdrPath = publishPath + scene.skyboxHDR;
         const assetDatas = {
             "kirinModel": {
-                url: "https://emw-pub.uality.cn/qohsaw5u_p32/latest/qohsaw5u_p32_sceneViewer.glb",
+                url: "https://emw-pub.uality.cn/qohsaw5u_p32/4/qohsaw5u_p32_sceneViewer.glb",
                 type: "gltf"
             },
             "jingyuModel": {
-                url: "https://emw-pub.uality.cn/qcnolauw_qg5/latest/qcnolauw_qg5_sceneViewer.glb",
+                url: "https://emw-pub.uality.cn/qcnolauw_qg5/4/qcnolauw_qg5_sceneViewer.glb",
                 type: "gltf"
             },
             "fangziModel": {
-                url: "https://emw-pub.uality.cn/5cvlv4xo_kzb/latest/5cvlv4xo_kzb_sceneViewer.glb",
+                url: "https://emw-pub.uality.cn/5cvlv4xo_kzb/7/5cvlv4xo_kzb_sceneViewer.glb",
                 type: "gltf"
             },
             "hdr": {

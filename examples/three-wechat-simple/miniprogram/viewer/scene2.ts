@@ -3,8 +3,8 @@ import { AssetsLoaderList } from "./assets-loader";
 import { publishPath, Viewer, ViewerOptions } from "./base";
 // import VideoPlayer from "./video-player";
 
-const SCENE_ID = "2wccqlzo_p2l";
-const SCENE_VERSION = "16";
+const SCENE_ID = "5cvlv4xo_kzb";
+const SCENE_VERSION = "7";
 
 export class Scene2 extends Viewer {
 
@@ -32,15 +32,15 @@ export class Scene2 extends Viewer {
         const hdrPath = publishPath + scene.skyboxHDR;
         const assetDatas: any = {
             "kirinModel": {
-                url: "https://emw-pub.uality.cn/qohsaw5u_p32/latest/qohsaw5u_p32_sceneViewer.glb",
+                url: "https://emw-pub.uality.cn/qohsaw5u_p32/4/qohsaw5u_p32_sceneViewer.glb",
                 type: "gltf"
             },
             "jingyuModel": {
-                url: "https://emw-pub.uality.cn/qcnolauw_qg5/latest/qcnolauw_qg5_sceneViewer.glb",
+                url: "https://emw-pub.uality.cn/qcnolauw_qg5/4/qcnolauw_qg5_sceneViewer.glb",
                 type: "gltf"
             },
             "fangziModel": {
-                url: "https://emw-pub.uality.cn/5cvlv4xo_kzb/latest/5cvlv4xo_kzb_sceneViewer.glb",
+                url: "https://emw-pub.uality.cn/5cvlv4xo_kzb/7/5cvlv4xo_kzb_sceneViewer.glb",
                 type: "gltf"
             },
             "hdr": {
