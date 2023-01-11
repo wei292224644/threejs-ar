@@ -3,11 +3,10 @@ import { AssetsLoaderList } from "./assets-loader";
 import { publishPath, Viewer, ViewerOptions } from "./base";
 // import VideoPlayer from "./video-player";
 
-const SCENE_ID = "2wccqlzo_p2l";
-const SCENE_VERSION = "16";
+const SCENE_ID = "qohsaw5u_p32";
+const SCENE_VERSION = "latest";
 
 export class Scene1 extends Viewer {
-
 
     private gltf: any;
     private variantIdx = -1;
@@ -98,37 +97,6 @@ export class Scene1 extends Viewer {
         }
 
         this.animation.play("Take 001");
-
-
-        // const material = new MeshBasicMaterial({ side: DoubleSide });
-        // const bg = gltf.scene.getObjectByName("part_012");
-        // bg.material.color = new Color(0x333333);
-
-
-        // var material = new MeshBasicMaterial({ side: DoubleSide });
-        // var geometry = new PlaneGeometry(100, 100 / 2, 1);
-        // var plane3 = new Mesh(geometry, material);
-        // this.modelGroup.add(plane3);
-
-        // var textureLoader = new TextureLoader();
-
-        // this.videoPlayer.playVideo('target1', 'https://demo.uality.cn/Telefonica.mp4', async (res: any) => {
-        //     if (res) {
-        //         textureLoader.load(res, texture => { // 加载datauri数据到纹理，一定要写在回调里，不然也看着卡顿
-        //             texture.minFilter = NearestFilter
-        //             plane3.material.map = texture
-        //         });
-
-        //     }
-
-        // }).then(res => {
-        //     this.vp = res;
-        //     const context = res.context;
-
-        //     const canvasTexture = new CanvasTexture(context.canvas);
-        //     canvasTexture.minFilter = NearestFilter;
-        //     bg.material.map = canvasTexture;
-        // })
 
         callback && callback();
     }

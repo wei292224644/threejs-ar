@@ -68,7 +68,7 @@ export class Viewer {
         this.clock = new Clock();
 
         this.camera = new PerspectiveCamera(45, canvas.width / canvas.height, 0.1, 1000);
-        this.camera.position.z = 1;
+        this.camera.position.z = 5;
 
         const path = 'https://demo.uality.cn/cubemap/59/';
         const format = '.jpg';

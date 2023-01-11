@@ -1,5 +1,5 @@
 import {
-    Scene1
+    Scene1, Scene2
 } from "../viewer/viewer";
 
 export default function getBehavior() {
@@ -54,7 +54,7 @@ export default function getBehavior() {
                 this.innerAudioContext.loop = true;
 
                 const canvas = this.canvas;
-                this.viewer = new Scene1(canvas, this.innerAudioContext);
+                this.viewer = new Scene2(canvas, this.innerAudioContext);
                 this.viewer.init(() => {
 
                     // setTimeout(() => {

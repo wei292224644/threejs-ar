@@ -6350,7 +6350,7 @@ class Viewer {
         this.clock = new three.Clock();
 
         this.camera = new three.PerspectiveCamera(45, canvas.width / canvas.height, 0.1, 1000);
-        this.camera.position.z = 1;
+        this.camera.position.z = 5;
 
         const path = 'https://demo.uality.cn/cubemap/59/';
         const format = '.jpg';
@@ -6593,11 +6593,10 @@ class Viewer {
 
 // import VideoPlayer from "./video-player";
 
-const SCENE_ID = "2wccqlzo_p2l";
-const SCENE_VERSION = "16";
+const SCENE_ID$1 = "qohsaw5u_p32";
+const SCENE_VERSION$1 = "latest";
 
 class Scene1 extends Viewer {
-
 
     
      __init() {this.variantIdx = -1;}
@@ -6610,7 +6609,7 @@ class Scene1 extends Viewer {
     }
 
     async init(callback) {
-        let jpath = publishPath + SCENE_ID + "/" + SCENE_VERSION + "/publish.json";
+        let jpath = publishPath + SCENE_ID$1 + "/" + SCENE_VERSION$1 + "/publish.json";
         const loader = new three.FileLoader();
 
         const data = await new Promise((resolve) => {
@@ -6619,7 +6618,7 @@ class Scene1 extends Viewer {
 
         const scene = data.scene;
 
-        const gltfPath = publishPath + SCENE_ID + "/" + scene.gltf.replace(/.glb$/ig, "_sceneViewer.glb");        const hdrPath = publishPath + scene.skyboxHDR;
+        const gltfPath = publishPath + SCENE_ID$1 + "/" + scene.gltf.replace(/.glb$/ig, "_sceneViewer.glb");        const hdrPath = publishPath + scene.skyboxHDR;
         const assetDatas = {
             "gltf": {
                 url: gltfPath,
@@ -6637,7 +6636,7 @@ class Scene1 extends Viewer {
 
         for (let i = 0; data.audio && i < data.audio.length; i++) {
             assetDatas[`audio_` + i] = {
-                url: publishPath + SCENE_ID + "/" + data.audio[i].path,
+                url: publishPath + SCENE_ID$1 + "/" + data.audio[i].path,
                 type: "audio"
             };
         }
@@ -6677,7 +6676,7 @@ class Scene1 extends Viewer {
                 const audio = {
                     name: name,
                     volume: volume,
-                    src: publishPath + SCENE_ID + "/" + data.audio[aData.audio].path,
+                    src: publishPath + SCENE_ID$1 + "/" + data.audio[aData.audio].path,
                 };
 
                 audios.push(audio);
@@ -6792,6 +6791,128 @@ class Scene1 extends Viewer {
     }
 }
 
+// import VideoPlayer from "./video-player";
+
+const SCENE_ID = "2wccqlzo_p2l";
+const SCENE_VERSION = "16";
+
+class Scene2 extends Viewer {
+
+
+     __init() {this.variantIdx = -1;}
+    // private videoPlayer;
+    // private vp: any;
+
+    constructor(canvas, audioContext, options) {
+        super(canvas, audioContext, options);Scene2.prototype.__init.call(this);Scene2.prototype.__init2.call(this);
+        // this.videoPlayer = new VideoPlayer();
+    }
+
+    async init(callback) {
+        let jpath = publishPath + SCENE_ID + "/" + SCENE_VERSION + "/publish.json";
+        const loader = new three.FileLoader();
+
+        const data = await new Promise((resolve) => {
+            loader.load(jpath, (d) => { d = JSON.parse(d); resolve(d); });
+        });
+
+        const scene = data.scene;
+
+        const hdrPath = publishPath + scene.skyboxHDR;
+        const assetDatas = {
+            "kirinModel": {
+                url: "https://emw-pub.uality.cn/qohsaw5u_p32/latest/qohsaw5u_p32_sceneViewer.glb",
+                type: "gltf"
+            },
+            "jingyuModel": {
+                url: "https://emw-pub.uality.cn/qcnolauw_qg5/latest/qcnolauw_qg5_sceneViewer.glb",
+                type: "gltf"
+            },
+            "fangziModel": {
+                url: "https://emw-pub.uality.cn/5cvlv4xo_kzb/latest/5cvlv4xo_kzb_sceneViewer.glb",
+                type: "gltf"
+            },
+            "hdr": {
+                url: hdrPath,
+                type: "hdr"
+            },
+            "reticle": {
+                url: 'https://emw-pub.uality.cn/drnokeie_efi/2/drnokeie_efi_sceneViewer.glb',
+                type: "gltf"
+            }
+        };
+
+        for (let i = 0; data.audio && i < data.audio.length; i++) {
+            assetDatas[`audio_` + i] = {
+                url: publishPath + SCENE_ID + "/" + data.audio[i].path,
+                type: "audio"
+            };
+        }
+        const assets = new AssetsLoaderList(assetDatas);
+
+
+        const res = await assets.load();
+
+        const kirinModel = res.kirinModel;
+        const jingyuModel = res.jingyuModel;
+        const fangziModel = res.fangziModel;
+        const reticle = res.reticle;
+        const hdr = res.hdr;
+
+
+        hdr.mapping = three.EquirectangularReflectionMapping;
+
+
+        this.modelGroup.add(kirinModel.scene);
+        this.modelGroup.add(jingyuModel.scene);
+        this.modelGroup.add(fangziModel.scene);
+        this.modelReticle.add(reticle.scene);
+
+
+        const portal = kirinModel.scene;
+        this.setOutsidePortal(portal);
+
+        this.setBackground({ hdr: res.hdr, tonemapping: data.scene.tonemapping, exposure: data.scene.tonemapping_exposure });
+
+
+        this.animation.setClips(jingyuModel.animations);
+
+        // if (data.animationAudio) {
+        //     const audios = [];
+        //     for (let i = 0; i < data.animationAudio.length; i++) {
+        //         const aData = data.animationAudio[i];
+        //         const volume = aData.volume;
+        //         const name = jingyuModel.animations[i].name;
+
+        //         const audio = {
+        //             name: name,
+        //             volume: volume,
+        //             src: publishPath + SCENE_ID + "/" + data.audio[aData.audio].path,
+        //         }
+
+        //         audios.push(audio);
+        //     }
+        //     this.animation.setAudios(audios);
+        // }
+
+        this.animation.play("Take 001");
+
+        callback && callback();
+    }
+
+
+    __init2() {this.update = (() => {
+        return () => {
+        }
+    })();}
+
+
+    destroy() {
+
+    }
+}
+
 exports.Scene1 = Scene1;
+exports.Scene2 = Scene2;
 exports.Viewer = Viewer;
 exports.publishPath = publishPath;
