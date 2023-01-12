@@ -32,7 +32,7 @@ export class Scene2 extends Viewer {
         const hdrPath = publishPath + scene.skyboxHDR;
         const assetDatas: any = {
             "kirinModel": {
-                url: "https://emw-pub.uality.cn/qohsaw5u_p32/6/qohsaw5u_p32_sceneViewer.glb",
+                url: "https://emw-pub.uality.cn/qohsaw5u_p32/7/qohsaw5u_p32_sceneViewer.glb",
                 type: "gltf"
             },
             "jingyuModel": {
@@ -73,6 +73,19 @@ export class Scene2 extends Viewer {
 
         hdr.mapping = EquirectangularReflectionMapping;
 
+
+        kirinModel.scene.scale.x = 0.577
+        kirinModel.scene.scale.y = 0.577
+        kirinModel.scene.scale.z = 0.577
+
+        jingyuModel.scene.scale.x = 0.577
+        jingyuModel.scene.scale.y = 0.577
+        jingyuModel.scene.scale.z = 0.577        
+
+
+        fangziModel.scene.scale.x = 0.577
+        fangziModel.scene.scale.y = 0.577
+        fangziModel.scene.scale.z = 0.577
 
         this.modelGroup.add(kirinModel.scene);
         this.modelGroup.add(jingyuModel.scene);
