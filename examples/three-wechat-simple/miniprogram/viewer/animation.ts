@@ -58,12 +58,12 @@ export class AnimationController {
 
     pause() {
         this.paused = true;
-        this.viewer.audioContext.pause();
+        // this.viewer.audioContext.pause();
     }
 
     resume() {
         this.paused = false;
-        this.viewer.audioContext.play();
+        // this.viewer.audioContext.play();
     }
 
     stop() {
