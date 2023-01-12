@@ -6350,7 +6350,7 @@ class Viewer {
         this.clock = new three.Clock();
 
         this.camera = new three.PerspectiveCamera(45, canvas.width / canvas.height, 0.1, 1000);
-        this.camera.position.z = 5;
+        this.camera.position.z = 7;
 
         const path = 'https://demo.uality.cn/cubemap/59/';
         const format = '.jpg';
@@ -6790,7 +6790,7 @@ class Scene2 extends Viewer {
         const hdrPath = publishPath + scene.skyboxHDR;
         const assetDatas = {
             "kirinModel": {
-                url: "https://emw-pub.uality.cn/qohsaw5u_p32/7/qohsaw5u_p32_sceneViewer.glb",
+                url: "https://emw-pub.uality.cn/qohsaw5u_p32/8/qohsaw5u_p32_sceneViewer.glb",
                 type: "gltf"
             },
             "jingyuModel": {
@@ -6798,7 +6798,7 @@ class Scene2 extends Viewer {
                 type: "gltf"
             },
             "fangziModel": {
-                url: "https://emw-pub.uality.cn/5cvlv4xo_kzb/9/5cvlv4xo_kzb_sceneViewer.glb",
+                url: "https://emw-pub.uality.cn/5cvlv4xo_kzb/11/5cvlv4xo_kzb_sceneViewer.glb",
                 type: "gltf"
             },
             "hdr": {
