@@ -6422,7 +6422,7 @@ class Viewer {
             assets.load().then((res) => {
 
                 const gltf = res.gltf;
-                res.reticle;
+                const reticle = res.reticle;
                 res.outsidePortal;
                 const hdr = res.hdr ;
 
@@ -6463,10 +6463,9 @@ class Viewer {
                     this.scene.environment = hdr;
                 }
 
-
-
                 // this.renderer.toneMapping = NoToneMapping;
-
+                this.modelGroup.add(gltf.scene);
+                this.modelReticle.add(reticle.scene);
 
                 this.animation.setClips(gltf.animations);
 

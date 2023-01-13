@@ -186,10 +186,9 @@ export class Viewer {
                     this.scene.environment = hdr;
                 }
 
-
-
                 // this.renderer.toneMapping = NoToneMapping;
-
+                this.modelGroup.add(gltf.scene);
+                this.modelReticle.add(reticle.scene);
 
                 this.animation.setClips(gltf.animations);
 
