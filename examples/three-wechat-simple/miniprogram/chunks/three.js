@@ -16037,7 +16037,7 @@ function WebGLCubeUVMaps( renderer ) {
 
 function WebGLExtensions( gl ) {
 
-  const extensions = Object.assign( {}, PlatformManager0.polyfill.$defaultWebGLExtensions );
+	const extensions = {};
 
 	function getExtension( name ) {
 

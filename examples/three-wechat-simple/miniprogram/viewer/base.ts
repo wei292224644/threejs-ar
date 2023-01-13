@@ -102,13 +102,12 @@ export class Viewer {
     }
 
     async init(options: any, callback?: () => void) {
-        //@ts-ignore
-        // this[options.id] && this[options.id].init(callback);
         let jpath = publishPath + options.id + "/" + (options.version || "latest") + "/publish.json";
         const loader = new FileLoader();
         loader.load(jpath, (data: any) => {
             data = JSON.parse(data);
             const scene = data.scene;
+
 
             const gltfPath = publishPath + options.id + "/" + scene.gltf.replace(/.glb$/ig, "_sceneViewer.glb");;
             const hdrPath = publishPath + scene.skyboxHDR;
@@ -122,13 +121,10 @@ export class Viewer {
                     type: "hdr"
                 },
                 "reticle": {
-                    url: 'https://emw-pub.uality.cn/drnokeie_efi/2/drnokeie_efi_sceneViewer.glb',
+                    url: 'https://emw-pub.uality.cn/drnokeie_efi/2/drnokeie_efi.glb',
                     type: "gltf"
-                },
-                // "outsidePortal": {
-                //     url: 'https://emw-pub.uality.cn/g1uixcyk_tm4/7/g1uixcyk_tm4_sceneViewer.glb',
-                //     type: "gltf"
-                // }
+                }
+
             }
 
 
@@ -144,51 +140,46 @@ export class Viewer {
 
             assets.load().then((res: any) => {
 
-                const gltf = res.gltf;
-                const reticle = res.reticle;
-                const outsidePortal = res.outsidePortal;
+                const gltf = res.gltf as GLTF;
+                const reticle = res.reticle as GLTF;
                 const hdr = res.hdr as DataTexture;
 
+                this.scene.add(gltf.scene)
+                this.scene.add(reticle.scene)
 
-                // const outsideMat = new MeshBasicMaterial({
-                //     colorWrite: false,
-                // })
-                // const setRenderOrder = (node: any) => {
-                //     console.log(node);
-                //     if (node.type == "Mesh") {
-                //         node.renderOrder = -1;
-                //         node.material = outsideMat;
-                //     }
-
-                //     for (let i = 0; i < node.children.length; i++) {
-                //         const child = node.children[i];
-                //         setRenderOrder(child);
-                //     }
-                // }
-                // setRenderOrder(outsidePortal.scene);
-
-                // outsidePortal.scene.position.z = 0.1;
+                reticle.scene.visible = false;
 
 
-                if (this.isKirin) {
-                    const path = 'https://demo.uality.cn/cubemap/59/';
-                    const format = '.jpg';
-                    const urls = [
-                        path + 'px' + format, path + 'nx' + format,
-                        path + 'py' + format, path + 'ny' + format,
-                        path + 'pz' + format, path + 'nz' + format
-                    ];
+                hdr.mapping = EquirectangularReflectionMapping;
+                this.scene.environment = hdr;
 
-                    const reflectionCube = new CubeTextureLoader().load(urls);
 
-                } else {
-                    hdr.mapping = EquirectangularReflectionMapping;
-                    this.scene.environment = hdr;
+                switch (data.scene.tonemapping) {
+                    case "1":
+                        //linear
+                        this.renderer.toneMapping = LinearToneMapping;
+                        break;
+                    case "2":
+                        //filmic
+                        this.renderer.toneMapping = ACESFilmicToneMapping;
+                        break;
+                    case "3":
+                        //hejl
+                        this.renderer.toneMapping = ReinhardToneMapping;
+                        break;
+                    case "4":
+                        //ACES filmic
+                        this.renderer.toneMapping = ACESFilmicToneMapping;
+                        break;
+                    case "5":
+                        //ACES v2 filmic
+                        this.renderer.toneMapping = ReinhardToneMapping;
+                        break;
                 }
 
-                // this.renderer.toneMapping = NoToneMapping;
-                this.modelGroup.add(gltf.scene);
-                this.modelReticle.add(reticle.scene);
+                this.renderer.toneMappingExposure = data.scene.tonemapping_exposure;
+
+
 
                 this.animation.setClips(gltf.animations);
 
@@ -209,8 +200,12 @@ export class Viewer {
                     }
                     this.animation.setAudios(audios);
                 }
+
+                this.modelGroup = gltf.scene;
+                this.modelReticle = reticle.scene;
                 callback && callback();
             });
+
         });
     }
 
