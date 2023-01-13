@@ -1,5 +1,5 @@
 import {
-    Scene1, Scene2
+    Scene1, Scene2, Viewer
 } from "../viewer/viewer";
 
 export default function getBehavior() {
@@ -54,8 +54,11 @@ export default function getBehavior() {
                 this.innerAudioContext.loop = true;
 
                 const canvas = this.canvas;
-                this.viewer = new Scene2(canvas, this.innerAudioContext);
-                this.viewer.init(() => {
+                this.viewer = new Viewer(canvas, this.innerAudioContext);
+                this.viewer.init({
+                    id: "ljmp55hm_nib"
+                }, () => {  
+                    console.log('123')
 
                     // setTimeout(() => {
                     //     this.viewer.animation.pause();

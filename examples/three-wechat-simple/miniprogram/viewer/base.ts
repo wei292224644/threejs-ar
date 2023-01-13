@@ -11,8 +11,12 @@ import {
     WebGL1Renderer,
     CubeTextureLoader,
     MeshBasicMaterial,
-    Object3D
+    Object3D,
+    EquirectangularReflectionMapping,
+    DataTexture,
+    FileLoader
 } from "three";
+import { AssetsLoaderList } from "./assets-loader";
 
 
 export const publishPath = "https://emw-pub.uality.cn/";
@@ -97,123 +101,118 @@ export class Viewer {
 
     }
 
-    init(options: any, callback?: () => void) {
+    async init(options: any, callback?: () => void) {
         //@ts-ignore
-        this[options.id] && this[options.id].init(callback);
-        // let jpath = publishPath + options.id + "/" + (options.version || "latest") + "/publish.json";
-        // const loader = new FileLoader();
-        // loader.load(jpath, (data: any) => {
-        //     data = JSON.parse(data);
-        //     const scene = data.scene;
+        // this[options.id] && this[options.id].init(callback);
+        let jpath = publishPath + options.id + "/" + (options.version || "latest") + "/publish.json";
+        const loader = new FileLoader();
+        loader.load(jpath, (data: any) => {
+            data = JSON.parse(data);
+            const scene = data.scene;
+
+            const gltfPath = publishPath + options.id + "/" + scene.gltf.replace(/.glb$/ig, "_sceneViewer.glb");;
+            const hdrPath = publishPath + scene.skyboxHDR;
+            const assetDatas: any = {
+                "gltf": {
+                    url: gltfPath,
+                    type: "gltf"
+                },
+                "hdr": {
+                    url: hdrPath,
+                    type: "hdr"
+                },
+                "reticle": {
+                    url: 'https://emw-pub.uality.cn/drnokeie_efi/2/drnokeie_efi_sceneViewer.glb',
+                    type: "gltf"
+                },
+                // "outsidePortal": {
+                //     url: 'https://emw-pub.uality.cn/g1uixcyk_tm4/7/g1uixcyk_tm4_sceneViewer.glb',
+                //     type: "gltf"
+                // }
+            }
 
 
-        //     const gltfPath = publishPath + options.id + "/" + scene.gltf.replace(/.glb$/ig, "_sceneViewer.glb");;
-        //     const hdrPath = publishPath + scene.skyboxHDR;
-        //     const assetDatas: any = {
-        //         "gltf": {
-        //             url: gltfPath,
-        //             type: "gltf"
-        //         },
-        //         "hdr": {
-        //             url: hdrPath,
-        //             type: "hdr"
-        //         },
-        //         "reticle": {
-        //             url: 'https://emw-pub.uality.cn/drnokeie_efi/2/drnokeie_efi_sceneViewer.glb',
-        //             type: "gltf"
-        //         },
-        //         // "outsidePortal": {
-        //         //     url: 'https://emw-pub.uality.cn/g1uixcyk_tm4/7/g1uixcyk_tm4_sceneViewer.glb',
-        //         //     type: "gltf"
-        //         // }
-        //     }
+            for (let i = 0; data.audio && i < data.audio.length; i++) {
+                assetDatas[`audio_` + i] = {
+                    url: publishPath + options.id + "/" + data.audio[i].path,
+                    type: "audio"
+                }
+            }
+
+            const assets = new AssetsLoaderList(assetDatas);
 
 
-        //     for (let i = 0; data.audio && i < data.audio.length; i++) {
-        //         assetDatas[`audio_` + i] = {
-        //             url: publishPath + options.id + "/" + data.audio[i].path,
-        //             type: "audio"
-        //         }
-        //     }
+            assets.load().then((res: any) => {
 
-        //     const assets = new AssetsLoaderList(assetDatas);
+                const gltf = res.gltf;
+                const reticle = res.reticle;
+                const outsidePortal = res.outsidePortal;
+                const hdr = res.hdr as DataTexture;
 
 
-        //     assets.load().then((res: any) => {
+                // const outsideMat = new MeshBasicMaterial({
+                //     colorWrite: false,
+                // })
+                // const setRenderOrder = (node: any) => {
+                //     console.log(node);
+                //     if (node.type == "Mesh") {
+                //         node.renderOrder = -1;
+                //         node.material = outsideMat;
+                //     }
 
-        //         const gltf = res.gltf;
-        //         const reticle = res.reticle;
-        //         const outsidePortal = res.outsidePortal;
-        //         const hdr = res.hdr as DataTexture;
+                //     for (let i = 0; i < node.children.length; i++) {
+                //         const child = node.children[i];
+                //         setRenderOrder(child);
+                //     }
+                // }
+                // setRenderOrder(outsidePortal.scene);
 
-
-        //         // const outsideMat = new MeshBasicMaterial({
-        //         //     colorWrite: false,
-        //         // })
-        //         // const setRenderOrder = (node: any) => {
-        //         //     console.log(node);
-        //         //     if (node.type == "Mesh") {
-        //         //         node.renderOrder = -1;
-        //         //         node.material = outsideMat;
-        //         //     }
-
-        //         //     for (let i = 0; i < node.children.length; i++) {
-        //         //         const child = node.children[i];
-        //         //         setRenderOrder(child);
-        //         //     }
-        //         // }
-        //         // setRenderOrder(outsidePortal.scene);
-
-        //         // outsidePortal.scene.position.z = 0.1;
+                // outsidePortal.scene.position.z = 0.1;
 
 
-        //         if (this.isKirin) {
-        //             const path = 'https://demo.uality.cn/cubemap/59/';
-        //             const format = '.jpg';
-        //             const urls = [
-        //                 path + 'px' + format, path + 'nx' + format,
-        //                 path + 'py' + format, path + 'ny' + format,
-        //                 path + 'pz' + format, path + 'nz' + format
-        //             ];
+                if (this.isKirin) {
+                    const path = 'https://demo.uality.cn/cubemap/59/';
+                    const format = '.jpg';
+                    const urls = [
+                        path + 'px' + format, path + 'nx' + format,
+                        path + 'py' + format, path + 'ny' + format,
+                        path + 'pz' + format, path + 'nz' + format
+                    ];
 
-        //             const reflectionCube = new CubeTextureLoader().load(urls);
+                    const reflectionCube = new CubeTextureLoader().load(urls);
 
-        //         } else {
-        //             hdr.mapping = EquirectangularReflectionMapping;
-        //             this.scene.environment = hdr;
-        //         }
-
-
-
-        //         // this.renderer.toneMapping = NoToneMapping;
-
-
-        //         this.animation.setClips(gltf.animations);
-
-        //         if (data.animationAudio) {
-        //             const audios = [];
-        //             for (let i = 0; i < data.animationAudio.length; i++) {
-        //                 const aData = data.animationAudio[i];
-        //                 const volume = aData.volume;
-        //                 const name = gltf.animations[i].name;
-
-        //                 const audio = {
-        //                     name: name,
-        //                     volume: volume,
-        //                     src: publishPath + options.id + "/" + data.audio[aData.audio].path,
-        //                 }
-
-        //                 audios.push(audio);
-        //             }
-        //             this.animation.setAudios(audios);
-        //         }
+                } else {
+                    hdr.mapping = EquirectangularReflectionMapping;
+                    this.scene.environment = hdr;
+                }
 
 
 
+                // this.renderer.toneMapping = NoToneMapping;
 
-        //         callback && callback();
-        //     });
-        // });
+
+                this.animation.setClips(gltf.animations);
+
+                if (data.animationAudio) {
+                    const audios = [];
+                    for (let i = 0; i < data.animationAudio.length; i++) {
+                        const aData = data.animationAudio[i];
+                        const volume = aData.volume;
+                        const name = gltf.animations[i].name;
+
+                        const audio = {
+                            name: name,
+                            volume: volume,
+                            src: publishPath + options.id + "/" + data.audio[aData.audio].path,
+                        }
+
+                        audios.push(audio);
+                    }
+                    this.animation.setAudios(audios);
+                }
+                callback && callback();
+            });
+        });
     }
 
 
