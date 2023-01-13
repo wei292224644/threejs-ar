@@ -6790,15 +6790,15 @@ class Scene2 extends Viewer {
         const hdrPath = publishPath + scene.skyboxHDR;
         const assetDatas = {
             "kirinModel": {
-                url: "https://emw-pub.uality.cn/qohsaw5u_p32/10/qohsaw5u_p32_sceneViewer.glb",
+                url: "https://emw-pub.uality.cn/qohsaw5u_p32/11/qohsaw5u_p32_sceneViewer.glb",
                 type: "gltf"
             },
-            "jingyuModel": {
-                url: "https://emw-pub.uality.cn/qcnolauw_qg5/6/qcnolauw_qg5_sceneViewer.glb",
-                type: "gltf"
-            },
+            // "jingyuModel": {
+            //     url: "https://emw-pub.uality.cn/qcnolauw_qg5/6/qcnolauw_qg5_sceneViewer.glb",
+            //     type: "gltf"
+            // },
             "fangziModel": {
-                url: "https://emw-pub.uality.cn/5cvlv4xo_kzb/15/5cvlv4xo_kzb_sceneViewer.glb",
+                url: "https://emw-pub.uality.cn/5cvlv4xo_kzb/16/5cvlv4xo_kzb_sceneViewer.glb",
                 type: "gltf"
             },
             "hdr": {
@@ -6823,7 +6823,7 @@ class Scene2 extends Viewer {
         const res = await assets.load();
 
         const kirinModel = res.kirinModel;
-        const jingyuModel = res.jingyuModel;
+        // const jingyuModel = res.jingyuModel;
         const fangziModel = res.fangziModel;
         const reticle = res.reticle;
         const hdr = res.hdr;
@@ -6836,9 +6836,9 @@ class Scene2 extends Viewer {
         kirinModel.scene.scale.y = 0.577;
         kirinModel.scene.scale.z = 0.577;
 
-        jingyuModel.scene.scale.x = 0.577;
-        jingyuModel.scene.scale.y = 0.577;
-        jingyuModel.scene.scale.z = 0.577;        
+        // jingyuModel.scene.scale.x = 0.577
+        // jingyuModel.scene.scale.y = 0.577
+        // jingyuModel.scene.scale.z = 0.577        
 
 
         fangziModel.scene.scale.x = 0.577;
@@ -6846,7 +6846,7 @@ class Scene2 extends Viewer {
         fangziModel.scene.scale.z = 0.577;
 
         this.modelGroup.add(kirinModel.scene);
-        this.modelGroup.add(jingyuModel.scene);
+        // this.modelGroup.add(jingyuModel.scene);
         this.modelGroup.add(fangziModel.scene);
         this.modelReticle.add(reticle.scene);
 
@@ -6857,7 +6857,7 @@ class Scene2 extends Viewer {
         this.setBackground({ hdr: res.hdr, tonemapping: data.scene.tonemapping, exposure: data.scene.tonemapping_exposure });
 
 
-        this.animation.setClips(jingyuModel.animations);
+        // this.animation.setClips(jingyuModel.animations);
 
         // if (data.animationAudio) {
         //     const audios = [];
