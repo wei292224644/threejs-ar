@@ -6350,7 +6350,7 @@ class Viewer {
         this.clock = new three.Clock();
 
         this.camera = new three.PerspectiveCamera(45, canvas.width / canvas.height, 0.1, 1000);
-        this.camera.position.z = 7;
+        this.camera.position.z = 3;
 
         const path = 'https://demo.uality.cn/cubemap/59/';
         const format = '.jpg';
@@ -6425,38 +6425,9 @@ class Viewer {
                 this.scene.add(reticle.scene);
 
                 reticle.scene.visible = false;
-
-
+                
                 hdr.mapping = three.EquirectangularReflectionMapping;
-                this.scene.environment = hdr;
-
-
-                switch (data.scene.tonemapping) {
-                    case "1":
-                        //linear
-                        this.renderer.toneMapping = three.LinearToneMapping;
-                        break;
-                    case "2":
-                        //filmic
-                        this.renderer.toneMapping = three.ACESFilmicToneMapping;
-                        break;
-                    case "3":
-                        //hejl
-                        this.renderer.toneMapping = three.ReinhardToneMapping;
-                        break;
-                    case "4":
-                        //ACES filmic
-                        this.renderer.toneMapping = three.ACESFilmicToneMapping;
-                        break;
-                    case "5":
-                        //ACES v2 filmic
-                        this.renderer.toneMapping = three.ReinhardToneMapping;
-                        break;
-                }
-
-                this.renderer.toneMappingExposure = data.scene.tonemapping_exposure;
-
-
+                this.setBackground({ hdr: hdr, tonemapping: data.scene.tonemapping, exposure: data.scene.tonemapping_exposure });
 
                 this.animation.setClips(gltf.animations);
 
