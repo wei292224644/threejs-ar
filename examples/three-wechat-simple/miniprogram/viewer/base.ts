@@ -265,20 +265,19 @@ export class Viewer {
 
     disableWithDistance = (() => {
         let cameraPos = new Vector3();
-        let rootBonePos = new Vector3();
+        let modelGroupPos = new Vector3();
 
         return (distance: number) => {
-            // this.camera.getWorldPosition(cameraPos);
-            // this.rootBone.getWorldPosition(rootBonePos);
+            cameraPos.setFromMatrixPosition(this.camera.matrixWorld);
+            modelGroupPos.setFromMatrixPosition(this.modelGroup.matrixWorld);
 
-            const d = this.camera.position.distanceTo(this.rootBone.position);
-            this.rootBone.visible = d < distance;
+            const d = cameraPos.distanceTo(modelGroupPos);
+            this.modelGroup.visible = d > distance;
         }
     })()
 
 
     update() {
-
     }
 
     destroy() {

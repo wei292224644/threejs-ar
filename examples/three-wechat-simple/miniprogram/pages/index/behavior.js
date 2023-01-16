@@ -57,7 +57,7 @@ export default function getBehavior() {
                 this.viewer = new Viewer(canvas, this.innerAudioContext);
                 this.viewer.init({
                     id: "ljmp55hm_nib"
-                }, () => {  
+                }, () => {
                     console.log('123')
 
                     // setTimeout(() => {
@@ -146,6 +146,8 @@ export default function getBehavior() {
                         const frame = session.getVKFrame(canvas.width, canvas.height)
                         if (frame) {
                             this.render(frame)
+
+                            
                         }
 
                         session.requestAnimationFrame(onFrame)

@@ -6540,21 +6540,20 @@ class Viewer {
 
 
     __init3() {this.disableWithDistance = (() => {
-        new three.Vector3();
-        new three.Vector3();
+        let cameraPos = new three.Vector3();
+        let modelGroupPos = new three.Vector3();
 
         return (distance) => {
-            // this.camera.getWorldPosition(cameraPos);
-            // this.rootBone.getWorldPosition(rootBonePos);
+            cameraPos.setFromMatrixPosition(this.camera.matrixWorld);
+            modelGroupPos.setFromMatrixPosition(this.modelGroup.matrixWorld);
 
-            const d = this.camera.position.distanceTo(this.rootBone.position);
-            this.rootBone.visible = d < distance;
+            const d = cameraPos.distanceTo(modelGroupPos);
+            this.modelGroup.visible = d > distance;
         }
     })();}
 
 
     update() {
-
     }
 
     destroy() {
