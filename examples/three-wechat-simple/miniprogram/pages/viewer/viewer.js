@@ -6329,7 +6329,7 @@ class Viewer {
 
      __init2() {this.isKirin = false;}
 
-    constructor(canvas, audioContext, options) {Viewer.prototype.__init.call(this);Viewer.prototype.__init2.call(this);
+    constructor(canvas, audioContext, options) {Viewer.prototype.__init.call(this);Viewer.prototype.__init2.call(this);Viewer.prototype.__init3.call(this);
         options = options || {};
         this.isKirin = !!options.isKirin;
 
@@ -6425,7 +6425,7 @@ class Viewer {
                 this.scene.add(reticle.scene);
 
                 reticle.scene.visible = false;
-                
+
                 hdr.mapping = three.EquirectangularReflectionMapping;
                 this.setBackground({ hdr: hdr, tonemapping: data.scene.tonemapping, exposure: data.scene.tonemapping_exposure });
 
@@ -6537,6 +6537,20 @@ class Viewer {
 
         this.update();
     }
+
+
+    __init3() {this.disableWithDistance = (() => {
+        let cameraPos = new three.Vector3();
+        let rootBonePos = new three.Vector3();
+
+        return (distance) => {
+            this.camera.getWorldPosition(cameraPos);
+            this.rootBone.getWorldPosition(rootBonePos);
+
+            const d = cameraPos.distanceTo(rootBonePos);
+            this.rootBone.visible = d < distance;
+        }
+    })();}
 
 
     update() {

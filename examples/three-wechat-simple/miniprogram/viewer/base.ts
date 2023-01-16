@@ -14,7 +14,8 @@ import {
     Object3D,
     EquirectangularReflectionMapping,
     DataTexture,
-    FileLoader
+    FileLoader,
+    Vector3
 } from "three";
 import { AssetsLoaderList } from "./assets-loader";
 
@@ -148,7 +149,7 @@ export class Viewer {
                 this.scene.add(reticle.scene)
 
                 reticle.scene.visible = false;
-                
+
                 hdr.mapping = EquirectangularReflectionMapping;
                 this.setBackground({ hdr: hdr, tonemapping: data.scene.tonemapping, exposure: data.scene.tonemapping_exposure })
 
@@ -260,6 +261,20 @@ export class Viewer {
 
         this.update();
     }
+
+
+    disableWithDistance = (() => {
+        let cameraPos = new Vector3();
+        let rootBonePos = new Vector3();
+
+        return (distance: number) => {
+            this.camera.getWorldPosition(cameraPos);
+            this.rootBone.getWorldPosition(rootBonePos);
+
+            const d = cameraPos.distanceTo(rootBonePos);
+            this.rootBone.visible = d < distance;
+        }
+    })()
 
 
     update() {
