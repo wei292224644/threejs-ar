@@ -268,10 +268,10 @@ export class Viewer {
         let rootBonePos = new Vector3();
 
         return (distance: number) => {
-            this.camera.getWorldPosition(cameraPos);
-            this.rootBone.getWorldPosition(rootBonePos);
+            // this.camera.getWorldPosition(cameraPos);
+            // this.rootBone.getWorldPosition(rootBonePos);
 
-            const d = cameraPos.distanceTo(rootBonePos);
+            const d = this.camera.position.distanceTo(this.rootBone.position);
             this.rootBone.visible = d < distance;
         }
     })()
