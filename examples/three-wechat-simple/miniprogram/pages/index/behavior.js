@@ -1,5 +1,5 @@
 import {
-    Scene1, Scene2, Viewer
+    Scene3
 } from "../viewer/viewer";
 
 export default function getBehavior() {
@@ -45,7 +45,7 @@ export default function getBehavior() {
 
 
             },
-            onUnload() { },
+            onUnload() {},
             initVK() {
 
                 this.innerAudioContext = wx.createInnerAudioContext({
@@ -54,48 +54,17 @@ export default function getBehavior() {
                 this.innerAudioContext.loop = true;
 
                 const canvas = this.canvas;
-                this.viewer = new Viewer(canvas, this.innerAudioContext);
+                this.viewer = new Scene3(canvas, this.innerAudioContext);
                 this.viewer.init({
-                    id: "ljmp55hm_nib"
+                    baseSceneId: "ezp5ehon_arm",
+                    baseSceneVersion: "9",
+                    kirinSceneId: "xgtf03es_5hn",
+                    kirinSceneVersion: "latest",
+                    scale: 0.1
                 }, () => {
-                    console.log('123')
-
-                    // setTimeout(() => {
-                    //     this.viewer.animation.pause();
-                    // },3000)
-
-                    // setTimeout(()=>{
-                    //     this.viewer.animation.resume();
-                    // },5000)
+                    this.viewer.animation.play("Take 001");
                 });
                 this.viewer.render();
-
-                // this.viewer = new Viewer(canvas, this.innerAudioContext,{
-                //     isKirin:true
-                // });
-                // this.viewer.init({
-                //     // id: "w4brnnfq_gwl",
-                //     // version: 10,
-                //     // id: "zmcugkwi_13o",
-                //     // id: "gddebkfo_yrj",
-                //     // id: "glehb55g_a2u",
-                //     // version:2,
-                //     // id: "450yztqd_mh5",
-                //     id:"scene1"
-                // }, () => {
-                //     console.log("started");
-
-                //     // for (const [key, clip] of this.viewer.animation.clips) {
-                //     //     this.viewer.animation.play(key);
-                //     //     break;
-                //     // }
-
-                //     const info = wx.getSystemInfoSync()
-                //     calcSize(info.windowWidth, info.windowHeight, info.pixelRatio);
-                // });
-
-                // this.viewer.render();
-
 
                 // 自定义初始化
                 if (this.init) this.init()
@@ -147,7 +116,7 @@ export default function getBehavior() {
                         if (frame) {
                             this.render(frame)
 
-                            
+
                         }
 
                         session.requestAnimationFrame(onFrame)

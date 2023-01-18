@@ -4820,12 +4820,21 @@ class AnimationController {
 
     pause() {
         this.paused = true;
-        // this.viewer.audioContext.pause();
+
+        if (this.currentClip) {
+            const audio = this.audios.get(this.currentClip.name);
+            if (audio)
+                this.viewer.audioContext.pause();
+        }
     }
 
     resume() {
         this.paused = false;
-        // this.viewer.audioContext.play();
+        if (this.currentClip) {
+            const audio = this.audios.get(this.currentClip.name);
+            if (audio)
+                this.viewer.audioContext.play();
+        }
     }
 
     stop() {
@@ -6866,7 +6875,127 @@ class Scene2 extends Viewer {
     }
 }
 
+// import VideoPlayer from "./video-player";
+
+
+class Scene3 extends Viewer {
+    constructor(canvas, audioContext, options) {
+        super(canvas, audioContext, options);Scene3.prototype.__init.call(this);    }
+
+    async init(options
+
+
+
+
+
+, callback) {
+        if (!options.baseSceneId) return;
+
+        let jpath = publishPath + options.baseSceneId + "/" + options.baseSceneVersion + "/publish.json";
+        const loader = new three.FileLoader();
+
+        const data = await new Promise((resolve) => {
+            loader.load(jpath, (d) => { d = JSON.parse(d); resolve(d); });
+        });
+
+        const scene = data.scene;
+
+        const hdrPath = publishPath + scene.skyboxHDR;
+        const assetDatas = {
+            "kirinModel": {
+                url: `https://emw-pub.uality.cn/${options.kirinSceneId}/${options.kirinSceneVersion}/${options.kirinSceneId}_sceneViewer.glb`,
+                type: "gltf"
+            },
+
+            "baseModel": {
+                url: `https://emw-pub.uality.cn/${options.baseSceneId}/${options.baseSceneVersion}/${options.baseSceneId}_sceneViewer.glb`,
+                type: "gltf"
+            },
+            "hdr": {
+                url: hdrPath,
+                type: "hdr"
+            },
+            "reticle": {
+                url: 'https://emw-pub.uality.cn/drnokeie_efi/2/drnokeie_efi_sceneViewer.glb',
+                type: "gltf"
+            }
+        };
+
+        for (let i = 0; data.audio && i < data.audio.length; i++) {
+            assetDatas[`audio_` + i] = {
+                url: publishPath + options.baseSceneId + "/" + data.audio[i].path,
+                type: "audio"
+            };
+        }
+        const assets = new AssetsLoaderList(assetDatas);
+
+
+        const res = await assets.load();
+
+        const kirinModel = res.kirinModel;
+        const baseModel = res.baseModel;
+        const reticle = res.reticle;
+        const hdr = res.hdr;
+
+
+        hdr.mapping = three.EquirectangularReflectionMapping;
+
+
+        kirinModel.scene.scale.x = options.scale;
+        kirinModel.scene.scale.y = options.scale;
+        kirinModel.scene.scale.z = options.scale;
+
+        baseModel.scene.scale.x = options.scale;
+        baseModel.scene.scale.y = options.scale;
+        baseModel.scene.scale.z = options.scale;
+
+        this.modelGroup.add(kirinModel.scene);
+        // this.modelGroup.add(jingyuModel.scene);
+        this.modelGroup.add(baseModel.scene);
+        this.modelReticle.add(reticle.scene);
+
+
+        const portal = kirinModel.scene;
+        this.setOutsidePortal(portal);
+
+        this.setBackground({ hdr: res.hdr, tonemapping: data.scene.tonemapping, exposure: data.scene.tonemapping_exposure });
+
+
+        this.animation.setClips(baseModel.animations);
+
+        if (data.animationAudio) {
+            const audios = [];
+            for (let i = 0; i < data.animationAudio.length; i++) {
+                const aData = data.animationAudio[i];
+                const volume = aData.volume;
+                const name = baseModel.animations[i].name;
+
+                const audio = {
+                    name: name,
+                    volume: volume,
+                    src: publishPath + options.baseSceneId + "/" + data.audio[aData.audio].path,
+                };
+
+                audios.push(audio);
+            }
+            this.animation.setAudios(audios);
+        }
+        callback && callback();
+    }
+
+
+    __init() {this.update = (() => {
+        return () => {
+        }
+    })();}
+
+    destroy() {
+
+    }
+}
+
 exports.Scene1 = Scene1;
 exports.Scene2 = Scene2;
+exports.Scene3 = Scene3;
 exports.Viewer = Viewer;
 exports.publishPath = publishPath;

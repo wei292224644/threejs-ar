@@ -58,12 +58,21 @@ export class AnimationController {
 
     pause() {
         this.paused = true;
-        // this.viewer.audioContext.pause();
+
+        if (this.currentClip) {
+            const audio = this.audios.get(this.currentClip.name);
+            if (audio)
+                this.viewer.audioContext.pause();
+        }
     }
 
     resume() {
         this.paused = false;
-        // this.viewer.audioContext.play();
+        if (this.currentClip) {
+            const audio = this.audios.get(this.currentClip.name);
+            if (audio)
+                this.viewer.audioContext.play();
+        }
     }
 
     stop() {
